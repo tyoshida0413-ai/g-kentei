@@ -2,7 +2,7 @@
    ブラウザ内（localStorage）に保存し、JSON での書き出し・読み込みでバックアップする。 */
 (function () {
   const KEY = "gkentei.v1";
-  const blank = () => ({ v: 1, lastPos: null, read: {}, bms: [], ans: {}, mock: null, ui: { open: {} } });
+  const blank = () => ({ v: 1, lastPos: null, read: {}, bms: [], ans: {}, mock: null, known: {}, ui: { open: {} } });
   let state = blank();
   let available = true;
 
@@ -66,6 +66,12 @@
     },
 
     setMock(m) { state.mock = m; save(); },
+
+    /* フラッシュカードで「覚えた」語（設計書 §10.2） */
+    setKnown(id, on) {
+      if (on) state.known[id] = stamp(); else delete state.known[id];
+      save();
+    },
     setOpen(majorId, open) { state.ui.open[majorId] = open; save(); },
 
     exportJSON() {

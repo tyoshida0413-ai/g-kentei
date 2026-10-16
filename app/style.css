@@ -132,6 +132,8 @@ a { color: var(--ai); }
   border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
 }
 .side-views a:nth-child(3n) { border-right: 0; }
+/* 7つ目（記録）は最後の行に1つだけになるので、行の幅いっぱいに広げる */
+.side-views a:last-child:nth-child(3n+1) { grid-column: 1 / -1; border-right: 0; }
 .side-views a:hover { color: var(--ink); background: rgba(0,0,0,.03); }
 .side-views a.on { color: var(--shu); font-weight: 600; background: var(--paper-raise); }
 
@@ -334,13 +336,84 @@ a { color: var(--ai); }
 .dlg-btns button { border: 1px solid var(--rule-strong); background: var(--paper-raise); border-radius: 6px; padding: 5px 14px; }
 .dlg-btns .primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
+/* ───────── 右：用語のペイン（設計書 §10.1） ───────── */
+:root { --pane-w: 380px; }
+body.pane-open #main { margin-right: var(--pane-w); }
+#pane {
+  position: fixed; inset: 0 0 0 auto; width: var(--pane-w); z-index: 30;
+  background: var(--paper-raise); border-left: 1px solid var(--rule-strong);
+  display: flex; flex-direction: column; font-size: 14.5px; line-height: 1.85;
+}
+.pane-head {
+  display: flex; align-items: center; gap: 10px; padding: 10px 12px 10px 18px;
+  border-bottom: 1px solid var(--rule); background: var(--paper-side); min-height: 46px;
+}
+.pane-crumb { flex: 1; font-size: 12.5px; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pane-back { border: 0; background: none; color: var(--ai); font-size: 13px; padding: 2px 0; }
+.pane-close { border: 0; background: none; font-size: 22px; line-height: 1; color: var(--ink-2); padding: 0 4px; }
+.pane-close:hover, .pane-back:hover { color: var(--ink); }
+.pane-body { flex: 1; overflow: auto; padding: 18px 22px 40px; }
+.pane-term .p-term { font-family: var(--serif); font-size: 21px; font-weight: 600; letter-spacing: .04em; }
+.pane-term .p-read { display: block; color: var(--ink-3); font-size: 12.5px; }
+.p-alias, .p-kw { color: var(--ink-3); font-size: 12.5px; margin-top: 4px; }
+.p-short { margin: 12px 0 16px; }
+.pane-more, .pane-open-text {
+  display: block; width: 100%; text-align: left; border: 0; border-top: 1px solid var(--rule);
+  background: none; color: var(--ai); padding: 10px 0; font-size: 14px;
+}
+.pane-more:hover, .pane-open-text:hover { color: var(--ink); }
+.pane-item h3 { font-family: var(--serif); font-size: 18px; font-weight: 600; margin: 4px 0 6px; line-height: 1.55; }
+.pane-item .body { font-size: 14.5px; }
+.pane-item .body table { font-size: 13px; }
+.pane-item .exam { font-size: 13.5px; }
+.pane-item .pane-hit { background: var(--shu-soft); }
+.pane-body > .note { margin: 0 0 12px; }
+
+/* ───────── フラッシュカード（設計書 §10.2） ───────── */
+.btn.small { padding: 3px 12px; font-size: 13px; }
+.fc-range { border-top: 1px solid var(--rule); margin-bottom: 18px; }
+.fc-all { display: flex; gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+.fc-major { padding: 8px 0; border-bottom: 1px solid var(--rule); }
+.fc-mlabel { display: flex; gap: 8px; align-items: baseline; font-weight: 600; cursor: pointer; }
+.fc-mno { font-family: var(--latin-serif); font-style: italic; color: var(--ink-3); font-weight: 400; }
+.fc-secs { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0 18px; padding: 2px 0 0 26px; font-size: 14px; }
+.fc-sec { display: flex; gap: 8px; align-items: baseline; color: var(--ink-2); cursor: pointer; }
+.fc-sno { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+.fc-opts { display: flex; gap: 22px; flex-wrap: wrap; margin-bottom: 8px; }
+.fc-opts label { cursor: pointer; }
+.fc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.fc-count { font-family: var(--mono); font-size: 14px; color: var(--ink-2); }
+.fc-progress { height: 3px; background: var(--rule); margin-bottom: 22px; }
+.fc-progress i { display: block; height: 100%; background: var(--shu); }
+.fc-card {
+  min-height: 260px; border: 1px solid var(--rule-strong); border-radius: 10px; background: var(--paper-raise);
+  padding: 34px 36px; display: flex; flex-direction: column; justify-content: center; cursor: pointer; position: relative;
+}
+.fc-card.flipped { cursor: default; justify-content: flex-start; }
+.fc-card:focus-visible { outline: 2px solid var(--ai); outline-offset: 2px; }
+.fc-front { font-family: var(--serif); font-size: 26px; font-weight: 600; text-align: center; letter-spacing: .04em; line-height: 1.5; }
+.fc-card.flipped .fc-front { font-size: 21px; text-align: left; }
+.fc-read { display: block; font-family: var(--sans); font-size: 12.5px; font-weight: 400; color: var(--ink-3); letter-spacing: .02em; }
+.fc-hint { text-align: center; color: var(--ink-3); font-size: 12.5px; margin-top: 18px; }
+.fc-back { margin-top: 14px; border-top: 1px solid var(--rule); padding-top: 14px; }
+.fc-more { align-self: flex-start; border: 0; background: none; color: var(--ai); padding: 10px 0 0; font-size: 14px; }
+.fc-known { position: absolute; top: 12px; right: 16px; font-size: 12px; color: var(--ok); }
+.fc-nav { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 16px 0 6px; }
+.fc-nav .fc-ok { background: var(--ok); border-color: var(--ok); color: #fff; }
+.fc-nav .fc-ng { border-color: var(--ng); color: var(--ng); }
+.fc-nav .fc-ng:hover { background: var(--ng); color: #fff; }
+
 /* 狭い画面（PC のウィンドウを細くしたとき） */
 @media (max-width: 1000px) {
   :root { --side-w: 260px; }
   .view { padding: 32px 28px 100px 56px; }
   [data-pid].bm-on::before { left: -26px; }
+  /* 狭い画面ではペインを本文の上に重ねる */
+  body.pane-open #main { margin-right: 0; }
+  #pane { width: min(420px, 92vw); box-shadow: -12px 0 32px rgba(60, 50, 30, .18); }
 }
 @media print {
-  #side, #bm-pin, #tip, #toast, .drill, .sec-end { display: none !important; }
+  #side, #bm-pin, #tip, #toast, #pane, .drill, .sec-end { display: none !important; }
+  body.pane-open #main { margin-right: 0; }
   #main { margin-left: 0; }
 }

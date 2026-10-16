@@ -123,6 +123,7 @@
       const a = document.createElement("a");
       a.className = "t-more";
       a.href = "#/text/" + g.home + "/g-" + g.id;
+      a.dataset.g = g.id;
       a.textContent = "詳しく：" + secTitle(g.home) + " →";
       tip.appendChild(a);
     }
@@ -153,13 +154,17 @@
     clearTimeout(hideT);
     hideT = setTimeout(hide, 220);
   });
+  /* 単語のクリックと小窓の「詳しく」は、本文を動かさずに右のペインで開く（設計書 §10.1） */
   document.addEventListener("click", e => {
     const t = e.target.closest && e.target.closest(".term");
     if (t) {
       const g = byId.get(t.dataset.g);
-      if (g && g.home) location.hash = "#/text/" + g.home + "/g-" + g.id;
       hide();
+      if (g && GK.pane) GK.pane.openTerm(g.id);
+      else if (g && g.home) location.hash = "#/text/" + g.home + "/g-" + g.id;
     } else if (e.target.closest && e.target.closest("#tip a")) {
+      const a = e.target.closest("#tip a");
+      if (GK.pane && a.dataset.g) { e.preventDefault(); GK.pane.openDetail(a.dataset.g); }
       hide();
     }
   });

@@ -12,7 +12,7 @@
   };
   const secById = new Map(SY.sections.map(s => [s.id, s]));
   const majorById = new Map(SY.majors.map(m => [m.id, m]));
-  const views = ["text", "index", "mock", "review", "official", "data"];
+  const views = ["text", "index", "mock", "review", "official", "flash", "data"];
 
   GK.terms.build();
 
@@ -456,7 +456,8 @@
     tb.innerHTML = "<tr><td>読了した節</td><td class='num'>" + Object.keys(st.read).length + " ／ " + SY.sections.length + "</td></tr>"
       + "<tr><td>栞</td><td class='num'>" + st.bms.length + "</td></tr>"
       + "<tr><td>解いた問題</td><td class='num'>" + answered + "</td></tr>"
-      + "<tr><td>最後に正解した問題</td><td class='num'>" + okN + "</td></tr>";
+      + "<tr><td>最後に正解した問題</td><td class='num'>" + okN + "</td></tr>"
+      + "<tr><td>覚えた用語（フラッシュカード）</td><td class='num'>" + Object.keys(st.known || {}).length + " ／ " + GK.glossary.length + "</td></tr>";
     root.appendChild(tb);
     const row = h("div", "btn-row");
     const ex = h("button", "btn primary", "記録を書き出す（JSON）");
@@ -487,7 +488,7 @@
     const rs = h("button", "btn", "記録をすべて消す");
     rs.type = "button";
     rs.addEventListener("click", () => {
-      if (!confirm("栞・読了・解答の記録をすべて消します。元に戻せません。よろしいですか？")) return;
+      if (!confirm("栞・読了・解答・覚えた用語の記録をすべて消します。元に戻せません。よろしいですか？")) return;
       store.reset();
       afterImport();
       renderData(root);
@@ -545,6 +546,7 @@
     else if (v === "mock") GK.quiz.renderMock(root);
     else if (v === "review") GK.quiz.renderReview(root);
     else if (v === "official") GK.quiz.renderOfficial(root);
+    else if (v === "flash") GK.flash.render(root);
     else if (v === "data") renderData(root);
   }
   window.addEventListener("hashchange", route);

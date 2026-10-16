@@ -29,6 +29,7 @@
       <a href="#/mock" data-view="mock">模擬試験</a>
       <a href="#/review" data-view="review">間違えた問題</a>
       <a href="#/official" data-view="official">公式例題</a>
+      <a href="#/flash" data-view="flash">フラッシュカード</a>
       <a href="#/data" data-view="data">記録</a>
     </nav>
   </aside>
@@ -38,8 +39,17 @@
     <div id="view-mock" class="view" hidden></div>
     <div id="view-review" class="view" hidden></div>
     <div id="view-official" class="view" hidden></div>
+    <div id="view-flash" class="view" hidden></div>
     <div id="view-data" class="view" hidden></div>
   </main>
+  <aside id="pane" aria-label="用語の詳細" hidden>
+    <div class="pane-head">
+      <button class="pane-back" type="button" hidden>← 戻る</button>
+      <span class="pane-crumb"></span>
+      <button class="pane-close" type="button" aria-label="閉じる" title="閉じる（Esc）">×</button>
+    </div>
+    <div class="pane-body"></div>
+  </aside>
 </div>
 <div id="tip" role="tooltip" hidden></div>
 <button id="bm-pin" type="button" hidden title="この段落に栞を挟む">栞</button>
@@ -88,7 +98,9 @@
 <script src="data/questions/official.js"></script>
 <script src="app/store.js"></script>
 <script src="app/terms.js"></script>
+<script src="app/pane.js"></script>
 <script src="app/quiz.js"></script>
+<script src="app/flash.js"></script>
 <script src="app/app.js"></script>
 </body>
 </html>
