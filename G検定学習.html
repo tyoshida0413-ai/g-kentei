@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>G検定 学習テキスト</title>
+<link rel="stylesheet" href="app/style.css">
+</head>
+<body>
+<div id="app">
+  <aside id="side" aria-label="目次">
+    <div class="brand">
+      <div class="brand-title">G検定 学習テキスト</div>
+      <div class="brand-sub">シラバス v1.4（2026年5月改訂）準拠</div>
+    </div>
+    <div class="side-search">
+      <input id="q" type="search" placeholder="用語を検索" autocomplete="off" aria-label="用語を検索">
+      <div id="q-results" hidden></div>
+    </div>
+    <div class="side-actions">
+      <button id="btn-resume" type="button">前回の続きから</button>
+      <button id="btn-bms" type="button">栞の一覧 <span id="bm-count"></span></button>
+    </div>
+    <div id="bm-panel" hidden></div>
+    <nav id="toc"></nav>
+    <nav class="side-views" aria-label="画面の切り替え">
+      <a href="#/text" data-view="text">テキスト</a>
+      <a href="#/index" data-view="index">用語索引</a>
+      <a href="#/mock" data-view="mock">模擬試験</a>
+      <a href="#/review" data-view="review">間違えた問題</a>
+      <a href="#/official" data-view="official">公式例題</a>
+      <a href="#/data" data-view="data">記録</a>
+    </nav>
+  </aside>
+  <main id="main">
+    <div id="view-text" class="view"></div>
+    <div id="view-index" class="view" hidden></div>
+    <div id="view-mock" class="view" hidden></div>
+    <div id="view-review" class="view" hidden></div>
+    <div id="view-official" class="view" hidden></div>
+    <div id="view-data" class="view" hidden></div>
+  </main>
+</div>
+<div id="tip" role="tooltip" hidden></div>
+<button id="bm-pin" type="button" hidden title="この段落に栞を挟む">栞</button>
+<div id="toast" role="status" hidden></div>
+<dialog id="bm-dialog">
+  <form method="dialog">
+    <div class="dlg-title">栞を挟む</div>
+    <div class="dlg-snip" id="bm-snip"></div>
+    <label>メモ（任意）<input id="bm-memo" type="text" maxlength="80"></label>
+    <div class="dlg-btns"><button value="cancel" type="submit">やめる</button><button value="ok" type="submit" class="primary">挟む</button></div>
+  </form>
+</dialog>
+<script src="app/gk.js"></script>
+<script src="data/syllabus.js"></script>
+<script src="data/glossary/g01.js"></script>
+<script src="data/glossary/g02.js"></script>
+<script src="data/glossary/g03.js"></script>
+<script src="data/glossary/g04.js"></script>
+<script src="data/glossary/g05.js"></script>
+<script src="data/glossary/g06.js"></script>
+<script src="data/glossary/g07.js"></script>
+<script src="data/glossary/g08.js"></script>
+<script src="data/glossary/g09.js"></script>
+<script src="data/glossary/g10.js"></script>
+<script src="data/text/t01.js"></script>
+<script src="data/text/t02.js"></script>
+<script src="data/text/t03.js"></script>
+<script src="data/text/t04.js"></script>
+<script src="data/text/t05.js"></script>
+<script src="data/text/t06.js"></script>
+<script src="data/text/t07.js"></script>
+<script src="data/text/t08.js"></script>
+<script src="data/text/t09.js"></script>
+<script src="data/text/t10.js"></script>
+<script src="data/questions/q01.js"></script>
+<script src="data/questions/q02.js"></script>
+<script src="data/questions/q03.js"></script>
+<script src="data/questions/q04.js"></script>
+<script src="data/questions/q05.js"></script>
+<script src="data/questions/q06.js"></script>
+<script src="data/questions/q07.js"></script>
+<script src="data/questions/q08.js"></script>
+<script src="data/questions/q09.js"></script>
+<script src="data/questions/q10.js"></script>
+<script src="data/questions/mock.js"></script>
+<script src="data/questions/official.js"></script>
+<script src="app/store.js"></script>
+<script src="app/terms.js"></script>
+<script src="app/quiz.js"></script>
+<script src="app/app.js"></script>
+</body>
+</html>
