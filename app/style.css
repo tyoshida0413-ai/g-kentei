@@ -124,16 +124,18 @@ a { color: var(--ai); }
 .toc-secs a.empty .s-title { color: var(--ink-3); }
 
 .side-views {
-  display: grid; grid-template-columns: repeat(3, 1fr);
+  display: grid; grid-template-columns: repeat(6, 1fr);
   border-top: 1px solid var(--rule-strong); background: var(--paper-side);
 }
 .side-views a {
   text-align: center; padding: 9px 2px; font-size: 12.5px; color: var(--ink-2); text-decoration: none;
   border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
 }
-.side-views a:nth-child(3n) { border-right: 0; }
-/* 7つ目（記録）は最後の行に1つだけになるので、行の幅いっぱいに広げる */
-.side-views a:last-child:nth-child(3n+1) { grid-column: 1 / -1; border-right: 0; }
+/* 7つを 3・2・2 に並べる（6列の格子で、1行目は2列分ずつ、2・3行目は3列分ずつ）。
+   「フラッシュカード」が1行に収まり、最後の行に1つだけ残る枠も出ないようにするため */
+.side-views a { grid-column: span 2; }
+.side-views a:nth-child(n+4) { grid-column: span 3; }
+.side-views a:nth-child(3), .side-views a:nth-child(5), .side-views a:nth-child(7) { border-right: 0; }
 .side-views a:hover { color: var(--ink); background: rgba(0,0,0,.03); }
 .side-views a.on { color: var(--shu); font-weight: 600; background: var(--paper-raise); }
 
