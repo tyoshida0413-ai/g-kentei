@@ -294,7 +294,8 @@
     const snip = pinTarget.textContent.replace(/\s+/g, " ").trim().slice(0, 90);
     $("#bm-snip").textContent = snip;
     $("#bm-memo").value = "";
-    dlg.dataset.pid = pid;
+    /* data-pid にすると本文の段落向けの CSS（[data-pid] { position: relative; }）が当たり、モーダルの固定配置が崩れてページ先頭に出るため、別名にする */
+    dlg.dataset.bmPid = pid;
     dlg.dataset.sec = pinTarget.closest(".sec").dataset.sec;
     dlg.dataset.snip = snip;
     /* showModal() で本文が先頭まで戻るブラウザがあるため、位置を保存して戻す */
@@ -309,7 +310,7 @@
     if (dlg.open) dlg.close();
     window.scrollTo(0, y);
     if (!ok) return;
-    store.addBookmark({ sec: dlg.dataset.sec, pid: dlg.dataset.pid, memo: $("#bm-memo").value.trim(), snip: dlg.dataset.snip });
+    store.addBookmark({ sec: dlg.dataset.sec, pid: dlg.dataset.bmPid, memo: $("#bm-memo").value.trim(), snip: dlg.dataset.snip });
     afterBookmarkChange();
     toast("栞を挟みました");
   }
