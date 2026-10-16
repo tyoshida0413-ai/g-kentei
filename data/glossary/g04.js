@@ -107,7 +107,7 @@ GK.addGlossary([
 /* ── T13 誤差関数：シラバスのキーワード ── */
 { id: "mse-loss", term: "平均二乗誤差関数", reading: "へいきんにじょうごさかんすう", aliases: ["二乗誤差関数"], kw: ["平均二乗誤差関数"], home: "T13",
   short: "予測値と正解値の差の二乗を、データ全体で平均した誤差関数。主に回帰問題で、出力層の恒等関数と組み合わせて使う。差を二乗するため、大きく外れたデータの影響を強く受ける。",
-  src: [{ t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 6（6.2.1 Cost Functions）", u: "https://www.deeplearningbook.org/contents/mlp.html" }, { t: "PyTorch documentation: torch.nn.MSELoss", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.MSELoss.html" }] },
+  src: [{ t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 6（6.2.1 Cost Functions）", u: "https://www.deeplearningbook.org/contents/mlp.html" }, { t: "PyTorch documentation: torch.nn.MSELoss", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.MSELoss.html" }, { t: "Chai, T. & Draxler, R. R. (2014). Root mean square error (RMSE) or mean absolute error (MAE)? – Arguments against avoiding RMSE in the literature", u: "https://doi.org/10.5194/gmd-7-1247-2014" }] },
 { id: "cross-entropy", term: "交差エントロピー", reading: "こうさえんとろぴー", aliases: ["交差エントロピー誤差", "クロスエントロピー"], kw: ["交差エントロピー"], home: "T13",
   short: "正解の確率分布と予測の確率分布のずれを表す量で、分類問題の代表的な誤差関数。正解が1つのクラスだけのとき、正解クラスの予測確率を p とすると −log p になる。シグモイド関数・ソフトマックス関数の出力と組み合わせる。",
   src: [{ t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 3（3.13 Information Theory）", u: "https://www.deeplearningbook.org/contents/prob.html" }, { t: "PyTorch documentation: torch.nn.CrossEntropyLoss", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html" }] },

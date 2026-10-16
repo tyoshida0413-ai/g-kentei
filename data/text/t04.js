@@ -124,7 +124,8 @@ GK.addText([
     { t: "Chopra, Hadsell & LeCun (2005). Learning a Similarity Metric Discriminatively, with Application to Face Verification", u: "https://doi.org/10.1109/CVPR.2005.202" },
     { t: "Schroff, Kalenichenko & Philbin (2015). FaceNet: A Unified Embedding for Face Recognition and Clustering", u: "https://arxiv.org/abs/1503.03832" },
     { t: "Kingma, D. P. & Welling, M. (2013). Auto-Encoding Variational Bayes", u: "https://arxiv.org/abs/1312.6114" },
-    { t: "PyTorch documentation: torch.nn.CrossEntropyLoss", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html" }
+    { t: "PyTorch documentation: torch.nn.CrossEntropyLoss", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html" },
+    { t: "Chai, T. & Draxler, R. R. (2014). Root mean square error (RMSE) or mean absolute error (MAE)? – Arguments against avoiding RMSE in the literature", u: "https://doi.org/10.5194/gmd-7-1247-2014" }
   ] },
 { section: "T14",
   lead: "<p>パラメータの多いモデルは、訓練データの細かな特徴やノイズまで覚えてしまい、未知のデータでの性能が下がる（過学習、T10）。<strong>正則化</strong>は、これを抑えて汎化性能を高めるための工夫の総称である。</p><p>この節では、誤差関数に重みの大きさへの罰則を加える L0・L1・L2 正則化と、それを線形回帰に使ったラッソ回帰・リッジ回帰、ニューラルネットワーク特有のドロップアウトを学ぶ。早期終了（T16）やデータ拡張（T25）も、広い意味の正則化である。</p>",
