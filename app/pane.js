@@ -121,6 +121,8 @@
         : place.el.dataset.pid ? "#/text/" + g.home + "/" + place.el.dataset.pid
         : "#/text/" + g.home + (anchor && anchor !== "s-" + g.home ? "/" + anchor : "");
       if (location.hash === hash) window.dispatchEvent(new HashChangeEvent("hashchange")); else location.hash = hash;
+      /* 狭い画面ではペインが本文に重なるので、本文を見せるために閉じる */
+      if (NARROW.matches) close();
     });
     body.appendChild(go);
   }

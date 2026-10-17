@@ -279,6 +279,8 @@
     pin.hidden = false;
   });
   vText.addEventListener("mouseleave", e => { if (e.relatedTarget !== pin) { pin.hidden = true; pinTarget = null; } });
+  /* ボタンから本文の外へ動いたときも消す（本文に戻らないとボタンが出たままになっていたため） */
+  pin.addEventListener("mouseleave", e => { if (!vText.contains(e.relatedTarget)) { pin.hidden = true; pinTarget = null; } });
 
   const dlg = $("#bm-dialog");
   pin.addEventListener("click", () => {
