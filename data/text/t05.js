@@ -173,13 +173,13 @@ GK.addText([
     { t: "Vaswani et al. (2017). Attention Is All You Need", u: "https://arxiv.org/abs/1706.03762" }
   ] },
 { section: "T22",
-  lead: "<p>回帰結合層は、ある時刻の出力を次の時刻の自分自身への入力として戻す結合（回帰結合）を持つ層である。回帰結合層を含むネットワークをリカレントニューラルネットワーク（RNN）と呼び、文章・音声・株価のように順序に意味がある時系列データを扱う。</p><p>この節では、RNN の基本構造（エルマンネットワーク・ジョルダンネットワーク）、学習方法（BPTT・教師強制）、学習の課題（勾配消失・勾配爆発）と、それを解決するために生まれたゲート機構（LSTM・GRU）、双方向 RNN を学ぶ。</p>",
+  lead: "<p>回帰結合層は、ある時刻の出力を次の時刻の自分自身への入力として戻す結合（回帰結合）を持つ層である。回帰結合層を含むネットワークをリカレントニューラルネットワーク（RNN）と呼び、文章・音声・株価のように順序に意味があるデータ（時系列データ・系列データ）を扱う。</p><p>この節では、RNN の基本構造（エルマンネットワーク・ジョルダンネットワーク）、学習方法（BPTT・教師強制）、学習の課題（勾配消失・勾配爆発）と、それを解決するために生まれたゲート機構（LSTM・GRU）、双方向 RNN を学ぶ。</p>",
   items: [
   { g: "rnn", kw: ["リカレントニューラルネットワーク (RNN)"], title: "リカレントニューラルネットワーク（RNN）",
-    body: "<p>リカレントニューラルネットワーク（RNN）は、ある時刻の隠れ層の出力（隠れ状態）を、次の時刻の隠れ層の入力に戻す<strong>回帰結合</strong>を持つニューラルネットワークである。系列の要素を1つずつ順に入力し、それまでの情報を隠れ状態に要約して持ち続けながら処理する。</p><div class='formula'>h<sub>t</sub> = tanh(W<sub>x</sub>x<sub>t</sub> + W<sub>h</sub>h<sub>t−1</sub> + b)</div><p>（x<sub>t</sub>：時刻 t の入力、h<sub>t</sub>：時刻 t の隠れ状態）</p><p>重み W<sub>x</sub>、W<sub>h</sub> はすべての時刻で共通に使うので、系列の長さが変わっても同じネットワークで扱える。出力の形により、系列全体から1つの結果を出す（文章の感情分析など）、各時刻に出力する（単語ごとの品詞の判定など）、系列から別の系列を出す（機械翻訳など）といった使い方がある。</p><p>弱点は、長い系列で勾配消失・勾配爆発が起きやすく、遠く離れた時刻どうしの関係（長期の依存関係）を学習しにくいこと、時刻を1つずつ順に計算するので並列化しにくいことである。前者を改善したのが LSTM・GRU、後者も含めて解決したのが、回帰結合を使わず Attention を中心に構成した Transformer（T23）である。</p>",
+    body: "<p>リカレントニューラルネットワーク（RNN）は、ある時刻の隠れ層の出力（隠れ状態）を、次の時刻の隠れ層の入力に戻す<strong>回帰結合</strong>を持つニューラルネットワークである。系列の要素を1つずつ順に入力し、それまでの情報を隠れ状態に要約して持ち続けながら処理する。</p><div class='formula'>h<sub>t</sub> = tanh(W<sub>x</sub>x<sub>t</sub> + W<sub>h</sub>h<sub>t−1</sub> + b)</div><p>（x<sub>t</sub>：時刻 t の入力、h<sub>t</sub>：時刻 t の隠れ状態）</p><p>重み W<sub>x</sub>、W<sub>h</sub> はすべての時刻で共通に使うので、系列の長さが変わっても同じネットワークで扱える。出力の形により、系列全体から1つの結果を出す（文章の感情分析など）、各時刻に出力する（単語ごとの品詞の判定など）、系列から別の系列を出す（機械翻訳など）といった使い方がある。</p><p>弱点は、長い系列で勾配消失・勾配爆発が起きやすく、遠く離れた時刻どうしの関係（長期の依存関係）を学習しにくいこと、時刻を1つずつ順に計算するので並列化しにくいことである。前者を改善したのが LSTM・GRU、後者も含めて改善したのが、回帰結合を使わず Attention を中心に構成した Transformer（T23）である。</p>",
     exam: "回帰結合で過去の情報を保持すること、重みを全時刻で共有すること、長期の依存関係の学習が難しいことが問われる。" },
   { g: "time-series", kw: ["時系列データ"], title: "時系列データ",
-    body: "<p>時系列データは、時間の順に並んだデータである。株価・気温・売上・センサーの値・音声の波形などが典型で、並び順に意味があり、ある時点の値は前の時点の値と関係している。順序を入れ替えると意味が変わってしまう。</p><p>RNN は、過去の入力の情報を隠れ状態に保持しながら1時点ずつ処理するので、時系列データに向く。文章も「単語の並び」として同じように扱える（順序を持つデータ全般を系列データという）。統計的な手法である自己回帰モデル（AR モデル、T07）も、時系列の予測に使われる。</p>",
+    body: "<p>時系列データは、時間の順に並んだデータである。株価・気温・売上・センサーの値・音声の波形などが典型で、並び順に意味があり、ある時点の値は前の時点の値と関係していることが多い（自己相関・傾向・季節変動など）。順序を入れ替えると意味が変わってしまう。</p><p>RNN は、過去の入力の情報を隠れ状態に保持しながら1時点ずつ処理するので、時系列データに向く。文章も「単語の並び」として同じように扱える（順序を持つデータ全般を系列データという）。統計的な手法である自己回帰モデル（AR モデル、T07）も、時系列の予測に使われる。</p>",
     exam: "RNN が適したデータとして、「順序に意味があり、前後の値が関係するデータ」を選ばせる形で問われる。" },
   { g: "elman", kw: ["エルマンネットワーク"], title: "エルマンネットワーク",
     body: "<p>エルマンネットワークは Elman（1990）が提案した RNN で、<strong>隠れ層</strong>の出力を文脈層（context units）に写し取り、次の時刻にそれを隠れ層へ入力として戻す構造を持つ。隠れ層は、現在の入力と、1時刻前の自分自身の状態の両方から計算される。</p><p>文脈層の各ユニットは隠れ層のすべてのユニットにつながっており、1時刻前の隠れ層全体の状態が現在の隠れ層の計算に使われる。これは、現在一般に「単純な RNN」と呼ばれるものの原型である。Elman は、この仕組みで単語の並びの規則のような時間的な構造を学習できることを示した。</p>",
@@ -207,7 +207,7 @@ GK.addText([
     body: "<p>双方向 RNN は Schuster & Paliwal（1997）が提案したモデルで、系列を前から後ろへ処理する RNN と、後ろから前へ処理する RNN の2つを組み合わせ、各時刻の出力に両方の隠れ状態を使う。これにより、各時刻で<strong>過去と未来の両方</strong>の情報を考慮できる。</p><p>例えば文中の単語の品詞を判定するとき、その単語より後ろの単語も手がかりになる。ただし、系列の最後まで先に分かっている必要があるので、次の単語を1つずつ予測しながら文を生成するような、未来の入力が分からない課題には使えない。</p>",
     exam: "過去と未来の両方の情報を使えること、系列全体が先に分かっている課題でしか使えないことが問われる。" },
   { g: "teacher-forcing", kw: ["教師強制"], title: "教師強制",
-    body: "<p>教師強制（Teacher Forcing）は、系列を生成する RNN（機械翻訳のデコーダなど）の学習で、次の時刻の入力に、モデル自身が前の時刻に出した予測ではなく、<strong>正解データ</strong>を与える方法である（Williams & Zipser, 1989 などで用いられた）。</p><p>前の時刻の予測が間違っていても、正しい入力から次を学習できるので、学習が速く安定する。一方、推論時には正解がないため、モデル自身の出力を次の入力に使う。学習時に見る入力（正解）と推論時に見る入力（自分の予測）が違うため、推論時に一度誤るとその誤りが後に積み重なりやすい。これを和らげるため、学習が進むにつれて、正解の代わりにモデルの予測を入力に使う割合を増やすスケジュールドサンプリング（Bengio ら, 2015）などが提案されている。</p>",
+    body: "<p>教師強制（Teacher Forcing）は、系列を生成する RNN（機械翻訳のデコーダなど）の学習で、次の時刻の入力に、モデル自身が前の時刻に出した予測ではなく、<strong>正解データ</strong>を与える方法である（Williams & Zipser, 1989 などで用いられた）。</p><p>前の時刻の予測が間違っていても、正しい入力から次を学習できるので、学習が速く進みやすい。一方、推論時には正解がないため、モデル自身の出力を次の入力に使う。学習時に見る入力（正解）と推論時に見る入力（自分の予測）が違うため、推論時に一度誤るとその誤りが後に積み重なりやすい。これを和らげるため、学習が進むにつれて、正解の代わりにモデルの予測を入力に使う割合を増やすスケジュールドサンプリング（Bengio ら, 2015）などが提案されている。</p>",
     exam: "学習時に正解を次の入力に使うこと、推論時との違いが問題になりうることが問われる。" }
   ],
   pitfalls: [
@@ -233,7 +233,16 @@ GK.addText([
     { t: "Chung, Gulcehre, Cho & Bengio (2014). Empirical Evaluation of Gated Recurrent Neural Networks on Sequence Modeling", u: "https://arxiv.org/abs/1412.3555" },
     { t: "Schuster, M. & Paliwal, K. K. (1997). Bidirectional recurrent neural networks", u: "https://doi.org/10.1109/78.650093" },
     { t: "Williams, R. J. & Zipser, D. (1989). A Learning Algorithm for Continually Running Fully Recurrent Neural Networks", u: "https://doi.org/10.1162/neco.1989.1.2.270" },
-    { t: "Bengio, Vinyals, Jaitly & Shazeer (2015). Scheduled Sampling for Sequence Prediction with Recurrent Neural Networks", u: "https://arxiv.org/abs/1506.03099" }
+    { t: "Bengio, Vinyals, Jaitly & Shazeer (2015). Scheduled Sampling for Sequence Prediction with Recurrent Neural Networks", u: "https://arxiv.org/abs/1506.03099" },
+    { t: "Vaswani et al. (2017). Attention Is All You Need", u: "https://arxiv.org/abs/1706.03762" },
+    { t: "Greff, Srivastava, Koutník, Steunebrink & Schmidhuber (2017). LSTM: A Search Space Odyssey", u: "https://arxiv.org/abs/1503.04069" },
+    { t: "Zipser, D. (1989). Subgrouping Reduces Complexity and Speeds Up Learning in Recurrent Networks（NIPS 1989。打ち切り型 BPTT の説明）", u: "https://papers.nips.cc/paper_files/paper/1989/hash/c24cd76e1ce41366a4bbe8a49b02a028-Abstract.html" },
+    { t: "Williams, R. J. & Peng, J. (1990). An Efficient Gradient-Based Algorithm for On-Line Training of Recurrent Network Trajectories", u: "https://doi.org/10.1162/neco.1990.2.4.490" },
+    { t: "NIST/SEMATECH e-Handbook of Statistical Methods, 6.4 Introduction to Time Series Analysis", u: "https://www.itl.nist.gov/div898/handbook/pmc/section4/pmc4.htm" },
+    { t: "NIST/SEMATECH e-Handbook of Statistical Methods, 6.4.1 Definitions, Applications and Techniques（時系列の定義）", u: "https://www.itl.nist.gov/div898/handbook/pmc/section4/pmc41.htm" },
+    { t: "Tang, Qin & Liu (2015). Document Modeling with Gated Recurrent Neural Network for Sentiment Classification", u: "https://aclanthology.org/D15-1167/" },
+    { t: "PyTorch documentation: torch.nn.LSTM", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.LSTM.html" },
+    { t: "PyTorch documentation: torch.nn.GRU", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.GRU.html" }
   ] },
 { section: "T23",
   lead: "<p>Attention は、入力のどの部分にどれだけ注目するかを計算し、必要な情報を選んで取り出す仕組みである。RNN を使った Seq2Seq の「入力全体を固定長のベクトル1つに押し込む」という弱点を補うために機械翻訳に導入され、のちに Attention を中心に構成した Transformer が生まれた。</p><p>この節では、Seq2Seq から Attention が生まれた流れ、クエリ・キー・バリューによる計算の仕組み、Self-Attention と Source-Target Attention の違い、Transformer を支える Multi-Head Attention と位置エンコーディングを学ぶ。</p>",
