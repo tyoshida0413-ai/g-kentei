@@ -353,10 +353,10 @@ GK.addText([
     { t: "He, Zhang, Ren & Sun (2016). Deep Residual Learning for Image Recognition", u: "https://arxiv.org/abs/1512.03385" }
   ] },
 { section: "T25",
-  lead: "<p>データ拡張は、手元の訓練データに変換を加えて、データの量と多様性を人工的に増やす方法である。ディープラーニングは大量のデータを必要とし、データが少ないと過学習しやすい。データ拡張は、新たにデータを集めずに汎化性能を高められる、手軽で効果の大きい方法である。</p><p>この節では、画像の基本的な変換（Crop・Random Flip・Rotate・Brightness・Contrast）、画像の一部を隠したり2枚を混ぜたりする手法（Cutout・Random Erasing・Mixup・CutMix）、変換の組み合わせを自動で決める RandAugment、文章のデータ拡張（paraphrasing・noising）を学ぶ。</p>",
+  lead: "<p>データ拡張は、手元の訓練データに変換を加えて、データの量と多様性を人工的に増やす方法である。ディープラーニングは大量のデータを必要とし、データが少ないと過学習しやすい。データ拡張は、新たにデータを集めずに汎化性能を高められる、手軽で効果の大きい方法である。</p><p>この節では、画像の基本的な変換（Crop・Random Flip・Rotate・Brightness・Contrast）、画像の一部を隠したり2枚を混ぜたりする手法（Cutout・Random Erasing・Mixup・CutMix）、変換の選び方の自動化を単純にした RandAugment、文章のデータ拡張（paraphrasing・noising）を学ぶ。</p>",
   items: [
   { g: "data-augmentation", kw: [], title: "データ拡張",
-    body: "<p>データ拡張（Data Augmentation）は、訓練データに<strong>ラベル（意味）を変えない範囲の変換</strong>を加えて、データの種類を人工的に増やす方法である。例えば猫の画像を左右反転したり少し回転したりしても、猫であることは変わらない。さまざまな見え方の画像で学習することで過学習が抑えられ、汎化性能が高まる。AlexNet も、ランダムな切り抜きと左右反転、RGB の色の強さの変更によるデータ拡張を使った。</p><p>データ拡張は主に訓練データに対して行い、学習のたびにランダムに変換を変える（AlexNet は推論時にも、切り抜きと反転で作った 10 枚の画像の予測を平均した）。どの変換が使えるかは課題によって異なる。文字や数字の認識で左右反転や大きな回転を使うと、別の文字になってしまうことがある。物体検出で画像を変換したら、正解の枠も同じように変換する必要がある。</p><p>画像向けの手法が多いが、文章向け（paraphrasing・noising など）の手法もある。</p>",
+    body: "<p>データ拡張（Data Augmentation）は、訓練データに<strong>ラベル（意味）を変えない範囲の変換</strong>を加えて、データの種類を人工的に増やす方法である。例えば猫の画像を左右反転したり少し回転したりしても、猫であることは変わらない。さまざまな見え方の画像で学習することで過学習が抑えられ、汎化性能が高まる。AlexNet も、ランダムな切り抜きと左右反転、RGB の色の強さの変更によるデータ拡張を使った。なお、Mixup・CutMix のように、2つのデータを混ぜてラベルも混ぜる手法もある。</p><p>データ拡張は主に訓練データに対して行い、学習のたびにランダムに変換を変えることが多い（AlexNet は推論時にも、切り抜きと反転で作った 10 枚の画像の予測を平均した）。どの変換が使えるかは課題によって異なる。文字や数字の認識で左右反転や大きな回転を使うと、別の文字になってしまうことがある。物体検出では、反転や切り抜きのように物体の位置が変わる変換をしたら、正解の枠も同じように変換する必要がある。</p><p>画像向けの手法が多いが、文章向け（paraphrasing・noising など）の手法もある。</p>",
     exam: "ラベルを変えない変換を選ぶこと、課題に応じて使える変換が異なること（文字の反転など）が問われる。" },
   { g: "crop", kw: ["Crop"], title: "Crop",
     body: "<p>Crop（クロップ、切り抜き）は、画像の一部の領域をランダムな位置で切り抜いて訓練データとする変換である。物体の位置がずれた画像や、物体の一部だけが写った画像を作れるので、位置の変化に強くなる。AlexNet は、256×256 の画像から 224×224 の領域をランダムに切り出して学習に使った。</p><p>切り抜く大きさや縦横比もランダムに変え、決まった大きさに拡大・縮小し直す方法（torchvision の RandomResizedCrop など）もよく使われる。ただし、切り抜く範囲が小さすぎて対象の物体が写らなくなると、ラベルと中身が合わなくなる。</p>" },
@@ -375,7 +375,7 @@ GK.addText([
     body: "<p>Random Erasing は Zhong ら（2017）が提案した手法で、訓練画像に一定の確率 p で、<strong>大きさと縦横比をランダムに決めた長方形の領域</strong>を選び、その画素を<strong>ランダムな値</strong>で塗りつぶす。さまざまな程度に物体が隠れた（遮蔽された）画像ができ、過学習が抑えられ、隠れに強いモデルになる。原論文の画像分類での設定は、p = 0.5、消す面積が画像の 2〜40% である。画像分類のほか、物体検出や人物の再識別でも効果が示された。</p><p>Cutout とよく似ているが、Cutout は大きさの決まった正方形を0で塗るのに対し、Random Erasing は大きさ・縦横比が変わる長方形をランダムな値で塗り、適用するかどうかも確率で決める。</p>",
     exam: "Cutout との違い（形・大きさ・塗る値・適用の確率）が問われる。" },
   { g: "mixup", kw: ["Mixup"], title: "Mixup",
-    body: "<p>Mixup は Zhang ら（2017）が提案した手法で、2つの訓練データの入力とラベルを、<strong>同じ比率 λ で混ぜ合わせて</strong>新しいデータを作る。</p><div class='formula'>x̃ = λx<sub>i</sub> + (1 − λ)x<sub>j</sub>　　ỹ = λy<sub>i</sub> + (1 − λ)y<sub>j</sub></div><p>（y は one-hot のラベル。λ はベータ分布 Beta(α, α) から取り出す）</p><p>例えば λ = 0.7 で猫の画像と犬の画像を混ぜると、画像は2枚を 7:3 で重ね合わせたものになり、ラベルは「猫 0.7、犬 0.3」となる。訓練データの間でモデルの出力がなめらかに変わるよう促す正則化の効果があり、汎化性能が上がるほか、誤ったラベルの丸暗記を減らし、敵対的な入力への頑健性も高まると報告されている。原論文では、画像のほか音声や表形式のデータでも効果を確かめている。</p>",
+    body: "<p>Mixup は Zhang ら（2017）が提案した手法で、2つの訓練データの入力とラベルを、<strong>同じ比率 λ で混ぜ合わせて</strong>新しいデータを作る。</p><div class='formula'>x̃ = λx<sub>i</sub> + (1 − λ)x<sub>j</sub>　　ỹ = λy<sub>i</sub> + (1 − λ)y<sub>j</sub></div><p>（y は one-hot のラベル。λ はベータ分布 Beta(α, α) から取り出す）</p><p>例えば λ = 0.7 で猫の画像と犬の画像を混ぜると、画像は2枚を 7:3 で重ね合わせたものになり、ラベルは「猫 0.7、犬 0.3」となる。訓練データの間でモデルが線形にふるまう（出力が直線的に変わる）よう促す正則化の効果があり、汎化性能が上がるほか、誤ったラベルの丸暗記を減らし、敵対的な入力への頑健性も高まると報告されている。原論文では、画像のほか音声や表形式のデータでも効果を確かめている。</p>",
     exam: "入力とラベルの両方を同じ比率で混ぜることが、計算を含めて問われる。" },
   { g: "cutmix", kw: ["CutMix"], title: "CutMix",
     body: "<p>CutMix は Yun ら（2019）が提案した手法で、ある訓練画像の長方形の領域を、<strong>別の訓練画像の同じ位置の領域で置き換える</strong>（切り取って貼り付ける）。ラベルは、貼り付けた領域の<strong>面積の割合</strong>に応じて混ぜる。例えば画像 A の面積の 25% に画像 B の一部を貼ると、ラベルは「A 0.75、B 0.25」となる。</p><p>Cutout のように領域を黒などで塗りつぶすと、その部分の画素が学習に使われず、情報が失われる。CutMix は消した部分を別の画像で埋めるので、すべての画素を学習に活かせる。一方、Mixup のように画像全体を重ね合わせると、局所的には不自然な画像になる。CutMix はこの両者の弱点を補う手法で、画像分類のほか、物体の位置を推定する性能も向上したと報告されている。</p>",
@@ -384,10 +384,10 @@ GK.addText([
     body: "<p>RandAugment は Cubuk ら（2019）が提案した手法で、データ拡張の方針を自動で決める考え方を大幅に単純にしたものである。回転・平行移動・せん断・明るさ・コントラストなど 14 種類の変換（何もしない変換を含む）の中から、各画像に<strong>ランダムに N 個</strong>を選び、すべて<strong>共通の強さ M</strong> で適用する。なお、シラバスの表記は「RandAugument」だが、原論文の名称は RandAugment である。</p><p>先行する AutoAugment（Cubuk ら, 2018）は、どの変換をどの確率と強さで使うかの方針を、強化学習を使った探索で求めていた。探索には大きな計算が必要で、小さなモデル・小さなデータ（代理の課題）で探した方針を、大きなモデルに使い回していた。RandAugment は、調整するハイパーパラメータを N と M の2つだけに減らし、目的のモデルとデータで直接グリッドサーチできるようにした。CIFAR-10/100・SVHN・ImageNet で、それまでの自動データ拡張と同等以上の精度を示した。</p>",
     exam: "ハイパーパラメータが N（変換の数）と M（強さ）の2つだけであること、AutoAugment との違いが問われる。" },
   { g: "noising", kw: ["noising"], title: "noising",
-    body: "<p>noising（ノイズ付加）は、データに雑音を加えて訓練データを増やすデータ拡張である。自然言語処理のデータ拡張の総説（Li ら, 2022）は、手法を paraphrasing・noising・sampling の3つに分類し、noising を、意味が保たれる範囲でデータに雑音を加え、モデルの頑健性を高める方法と位置づけている。文章では、単語の入れ替え（swapping）・削除（deletion）・挿入（insertion）・置換（substitution）などを行う。例えば Wei & Zou（2019）は、同義語への置換、ランダムな挿入・入れ替え・削除という4つの簡単な操作で、文章分類の性能が上がることを示した。</p><p>画像では、画素にランダムな雑音（ガウスノイズなど）を加える方法がある（torchvision の GaussianNoise など。雑音の種類と強さによる効果の違いを Akbiyik, 2023 が調べている）。いずれも、少し乱れた入力に対しても同じ答えを出せるようにすることがねらいである。</p>",
+    body: "<p>noising（ノイズ付加）は、データに雑音を加えて訓練データを増やすデータ拡張である。自然言語処理のデータ拡張の総説（Li ら, 2022）は、手法を paraphrasing・noising・sampling の3つに分類し、noising を、意味が保たれる範囲でデータに雑音を加え、モデルの頑健性を高める方法と位置づけている。文章では、単語の入れ替え（swapping）・削除（deletion）・挿入（insertion）・置換（substitution）などを行う。ここでの置換は、つづりの誤りやランダムな語など、元の語と意味の似ていない語への置き換えで、類義語への置き換え（paraphrasing）とは区別される。例えば Wei & Zou（2019）の EDA は、同義語への置換、ランダムな挿入・入れ替え・削除という4つの簡単な操作で、文章分類の性能が上がることを示した（Li らは EDA を paraphrasing と noising の両方に含めている）。</p><p>画像では、画素にランダムな雑音（ガウスノイズなど）を加える方法がある（torchvision の GaussianNoise など。雑音の種類と強さによる効果の違いを Akbiyik, 2023 が調べている）。いずれも、少し乱れた入力に対しても同じ答えを出せるようにすることがねらいである。</p>",
     exam: "paraphrasing（意味を保った言い換え）との違いが問われる。" },
   { g: "paraphrasing", kw: ["paraphrasing"], title: "paraphrasing",
-    body: "<p>paraphrasing（言い換え）は、文章の<strong>意味をほとんど変えずに別の表現に言い換えて</strong>訓練データを増やす、自然言語処理のデータ拡張である。Li ら（2022）の分類では、元のデータからの変化が最も小さい種類にあたり、語・句・文のそれぞれの単位で言い換えを行う。主な方法は次のとおりである。</p><ul><li>類義語辞書（シソーラス）による単語の置き換え</li><li>単語の埋め込みや言語モデルを使った、似た意味の語への置き換え</li><li>逆翻訳：文を別の言語に機械翻訳し、元の言語に翻訳し直す（Sennrich ら, 2016 は、これで機械翻訳の学習データを増やした）</li><li>文法の規則による書き換えや、生成モデルによる言い換え</li></ul><p>言い換えによって意味やラベルが変わってしまわないよう注意が必要である（例：感情分析で否定の語が抜けると、肯定と否定が逆になる）。</p>",
+    body: "<p>paraphrasing（言い換え）は、文章の<strong>意味をほとんど変えずに別の表現に言い換えて</strong>訓練データを増やす、自然言語処理のデータ拡張である。Li ら（2022）の分類では、元のデータからの変化が最も小さい種類にあたり、語・句・文のそれぞれの単位で言い換えを行う。主な方法は次のとおりである。</p><ul><li>類義語辞書（シソーラス）による単語の置き換え</li><li>単語の埋め込みや言語モデルを使った、似た意味の語への置き換え</li><li>逆翻訳：文を別の言語に機械翻訳し、元の言語に翻訳し直す（例：Xie ら, 2019 は英語とフランス語の間の往復の翻訳で、文章分類の訓練データを言い換えた）。なお、機械翻訳の分野で Sennrich ら（2016）が使った back-translation は、目的言語（訳す先の言語）だけの文を原言語に自動翻訳して疑似的な対訳データを作る方法で、往復の翻訳による言い換えとは別のものである</li><li>文法の規則による書き換えや、生成モデルによる言い換え</li></ul><p>言い換えによって意味やラベルが変わってしまわないよう注意が必要である（例：感情分析で否定の語が抜けると、肯定と否定が逆になる）。</p>",
     exam: "具体的な方法（類義語への置き換え・逆翻訳など）と、noising との違いが問われる。" }
   ],
   pitfalls: [
@@ -396,7 +396,7 @@ GK.addText([
     "Cutout・Random Erasing はラベルを変えないが、Mixup・CutMix はラベルも混ぜる（Mixup は λ、CutMix は面積の割合で）。",
     "RandAugment で調整するハイパーパラメータは、変換の数 N と強さ M の2つだけ。変換の方針を強化学習の探索で求めるのは AutoAugment。",
     "データ拡張ではラベルを変えない変換を選ぶ。文字・数字の反転や大きな回転のように、意味が変わる変換は使わない。",
-    "paraphrasing は意味を保った言い換え、noising は雑音（入れ替え・削除・挿入・置換など）を加える方法。",
+    "paraphrasing は意味を保った言い換え（類義語への置き換えや逆翻訳など）、noising は雑音（入れ替え・削除・挿入、意味の似ていない語への置換など）を加える方法。",
     "シラバスの「RandAugument」は、原論文では「RandAugment」と表記される。"
   ],
   sources: [
@@ -411,8 +411,11 @@ GK.addText([
     { t: "Li, Hou & Che (2022). Data augmentation approaches in natural language processing: A survey", u: "https://doi.org/10.1016/j.aiopen.2022.03.001" },
     { t: "Wei, J. & Zou, K. (2019). EDA: Easy Data Augmentation Techniques for Boosting Performance on Text Classification Tasks", u: "https://arxiv.org/abs/1901.11196" },
     { t: "Sennrich, Haddow & Birch (2016). Improving Neural Machine Translation Models with Monolingual Data", u: "https://arxiv.org/abs/1511.06709" },
+    { t: "Xie, Dai, Hovy, Luong & Le (2019). Unsupervised Data Augmentation for Consistency Training", u: "https://arxiv.org/abs/1904.12848" },
     { t: "Akbiyik, M. E. (2023). Data Augmentation in Training CNNs: Injecting Noise to Images", u: "https://arxiv.org/abs/2307.06855" },
     { t: "torchvision documentation: GaussianNoise", u: "https://docs.pytorch.org/vision/stable/generated/torchvision.transforms.v2.GaussianNoise.html" },
-    { t: "torchvision documentation: Transforming images, videos, boxes and more", u: "https://docs.pytorch.org/vision/stable/transforms.html" }
+    { t: "torchvision documentation: Transforming images, videos, boxes and more", u: "https://docs.pytorch.org/vision/stable/transforms.html" },
+    { t: "Veeling, Linmans, Winkens, Cohen & Welling (2018). Rotation Equivariant CNNs for Digital Pathology", u: "https://arxiv.org/abs/1806.03962" },
+    { t: "Marcos, Volpi, Kellenberger & Tuia (2018). Land cover mapping at very high resolution with rotation equivariant CNNs: towards small yet accurate models", u: "https://arxiv.org/abs/1803.06253" }
   ] }
 ]);
