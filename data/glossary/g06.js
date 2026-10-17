@@ -263,7 +263,7 @@ GK.addGlossary([
 /* ── T27 自然言語処理：本文に出てくる他の専門用語 ── */
 { id: "morpheme", term: "形態素", reading: "けいたいそ", kw: [], home: "T27",
   short: "意味を持つ最小の言語の単位。例えば「食べました」は「食べ」「まし」「た」に分けられる。形態素解析では、文をこの単位に区切り、品詞などを判定する。",
-  src: [{ t: "MeCab: Yet Another Part-of-Speech and Morphological Analyzer（公式ページ）", u: "https://taku910.github.io/mecab/" }] },
+  src: [{ t: "Jurafsky & Martin. Speech and Language Processing (3rd ed. draft)", u: "https://web.stanford.edu/~jurafsky/slp3/" }, { t: "MeCab: Yet Another Part-of-Speech and Morphological Analyzer（公式ページ）", u: "https://taku910.github.io/mecab/" }] },
 { id: "mecab", term: "MeCab", reading: "mecab", kw: [], home: "T27",
   short: "日本語の形態素解析を行うオープンソースのソフトウェア（工藤拓ら）。条件付き確率場（CRF）でパラメータを推定し、それ以前の ChaSen などのツールより高い精度と速度を実現した。",
   src: [{ t: "MeCab: Yet Another Part-of-Speech and Morphological Analyzer（公式ページ）", u: "https://taku910.github.io/mecab/" }, { t: "Kudo, Yamamoto & Matsumoto (2004). Applying Conditional Random Fields to Japanese Morphological Analysis", u: "https://aclanthology.org/W04-3230/" }] },

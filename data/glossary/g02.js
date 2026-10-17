@@ -178,7 +178,7 @@ GK.addGlossary([
   src: [{ t: "Sahami, M., Dumais, S., Heckerman, D. & Horvitz, E. (1998). A Bayesian Approach to Filtering Junk E-Mail (AAAI Workshop on Learning for Text Categorization)", u: "https://cdn.aaai.org/Workshops/1998/WS-98-05/WS98-05-009.pdf" }] },
 { id: "nlp", term: "自然言語処理", abbr: "NLP", reading: "しぜんげんごしょり", aliases: ["Natural Language Processing"], kw: [], home: "T27",
   short: "人が日常で使う言葉（自然言語）で書かれた文章や話し言葉を、コンピュータで解析・生成・翻訳などする技術の総称。機械翻訳、質問応答、文書の分類、要約などを含む。",
-  src: [{ t: "Manning, C. D. & Schütze, H. (1999). Foundations of Statistical Natural Language Processing. MIT Press（公式サイト）", u: "https://nlp.stanford.edu/fsnlp/" }] },
+  src: [{ t: "Jurafsky & Martin. Speech and Language Processing (3rd ed. draft)", u: "https://web.stanford.edu/~jurafsky/slp3/" }, { t: "Manning, C. D. & Schütze, H. (1999). Foundations of Statistical Natural Language Processing. MIT Press（公式サイト）", u: "https://nlp.stanford.edu/fsnlp/" }] },
 
 /* ── T06 ディープラーニング：シラバスのキーワード ── */
 { id: "human-neural-circuit", term: "人間の神経回路", reading: "にんげんのしんけいかいろ", aliases: ["脳の神経回路"], kw: ["人間の神経回路"], home: "T06",
