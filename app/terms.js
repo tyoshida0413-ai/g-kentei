@@ -80,7 +80,9 @@
         if (isAscii(s) && (alnumCh(before) || alnumCh(after))) ok = false;
         if (ok && isKata(s) && (kataCh(before) || kataCh(after))) ok = false;
         const g = ok ? pick(bySurface.get(s), sec) : null;
-        if (!g || g.id === self || seen.has(g.id)) { re.lastIndex = i + 1; continue; }
+        if (!g) { re.lastIndex = i + 1; continue; }
+        /* 項目自身の語・この段落で印を付け済みの語は、語の終わりまで飛ばす（1文字ずつ進めると「交差エントロピー」の中の「エントロピー」に印が付くため） */
+        if (g.id === self || seen.has(g.id)) { re.lastIndex = i + s.length; continue; }
         seen.add(g.id);
         if (i > last) frag.appendChild(document.createTextNode(text.slice(last, i)));
         const span = document.createElement("span");
