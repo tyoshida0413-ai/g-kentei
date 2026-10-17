@@ -83,7 +83,7 @@ GK.addText([
     { t: "PyTorch documentation: torch.nn.Conv2d", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html" }
   ] },
 { section: "T19",
-  lead: "<p>正規化層は、ネットワークの途中の値を平均0・分散1程度にそろえ、学習を速く安定させる層である。どの範囲のデータで平均と分散を求めるかによって、代表的な4つの手法に分かれる。データの形を「バッチ（N）× チャネル（C）× 縦（H）× 横（W）」とすると、違いは次のとおりである。</p><table><tr><th>手法</th><th>平均と分散を求める範囲</th><th>バッチサイズの影響</th></tr><tr><td>バッチ正規化</td><td>チャネルごとに、ミニバッチ内の全データ × 縦 × 横</td><td>受ける（小さいと不安定）</td></tr><tr><td>レイヤー正規化</td><td>データごとに、全チャネル × 縦 × 横</td><td>受けない</td></tr><tr><td>インスタンス正規化</td><td>データごと・チャネルごとに、縦 × 横</td><td>受けない</td></tr><tr><td>グループ正規化</td><td>データごと・チャネルのグループごとに、グループ内のチャネル × 縦 × 横</td><td>受けない</td></tr></table><p>いずれの手法も、正規化した後に学習可能な係数 γ（拡大）と β（平行移動）で値を調整するのが基本である。</p>",
+  lead: "<p>正規化層は、ネットワークの途中の値を平均0・分散1程度にそろえ、学習を速く安定させる層である。どの範囲のデータで平均と分散を求めるかによって、代表的な4つの手法に分かれる。データの形を「バッチ（N）× チャネル（C）× 縦（H）× 横（W）」とすると、違いは次のとおりである。</p><table><tr><th>手法</th><th>平均と分散を求める範囲</th><th>バッチサイズの影響</th></tr><tr><td>バッチ正規化</td><td>チャネルごとに、ミニバッチ内の全データ × 縦 × 横</td><td>受ける（小さいと不安定）</td></tr><tr><td>レイヤー正規化</td><td>データごとに、全チャネル × 縦 × 横</td><td>受けない</td></tr><tr><td>インスタンス正規化</td><td>データごと・チャネルごとに、縦 × 横</td><td>受けない</td></tr><tr><td>グループ正規化</td><td>データごと・チャネルのグループごとに、グループ内のチャネル × 縦 × 横</td><td>受けない</td></tr></table><p>いずれの手法も、正規化した後に学習可能な係数 γ（拡大）と β（平行移動）で値を調整するのが基本である。ただし、インスタンス正規化の原論文の式と、PyTorch の InstanceNorm2d の既定の設定では、この調整を行わない。</p>",
   items: [
   { g: "batch-norm", kw: ["バッチ正規化"], title: "バッチ正規化",
     body: "<p>バッチ正規化（Batch Normalization）は Ioffe & Szegedy（2015）が提案した手法で、ミニバッチ内のデータを使って特徴ごと（畳み込み層ではチャネルごと）に平均と分散を求め、平均0・分散1に正規化する。その後、学習可能なパラメータ γ と β で拡大・平行移動する。</p><div class='formula'>x̂ = (x − μ<sub>B</sub>) ÷ √(σ<sub>B</sub><sup>2</sup> + ε)　　y = γx̂ + β</div><p>（μ<sub>B</sub>、σ<sub>B</sub><sup>2</sup>：ミニバッチの平均と分散。ε：0で割るのを防ぐ小さな値）</p><p>原論文は、学習中に前の層のパラメータが変わり、各層への入力の分布が変わり続ける現象を<strong>内部共変量シフト</strong>と呼び、これを抑えることで学習が速くなると説明した。大きな学習率を使える、重みの初期値に敏感でなくなる、正則化の効果があり場合によってはドロップアウトが不要になる、といった効果が報告されている。ただし、効果の理由を内部共変量シフトの抑制とする説明には、後の研究（Santurkar ら, 2018）で異論が出ている。</p><p>推論時は、学習中に記録しておいた平均と分散の<strong>移動平均</strong>を使って正規化する。ミニバッチの統計量に頼るため、バッチサイズが小さいと推定が不正確になり、性能が落ちる。</p>",
@@ -95,7 +95,7 @@ GK.addText([
     body: "<p>インスタンス正規化（Instance Normalization）は、Ulyanov ら（2016）が画風変換（スタイル変換：写真を絵画のような画風に変換する処理）の改良として提案した手法である。<strong>1つのデータの1つのチャネルごとに</strong>、縦×横の全画素の平均と分散で正規化する。</p><p>変換結果の画風は、元の写真のコントラスト（明暗の差）に左右されないほうがよい。チャネルごとに正規化すると、画像ごとのコントラストの情報が取り除かれるため、この目的に合う。原論文では、学習時だけでなく推論時にもインスタンス正規化を適用する（その画像自体の統計量で正規化する）ことで、生成画像の質が大きく改善した。</p>",
     exam: "データごと・チャネルごとに正規化することと、画風変換で使われることが問われる。" },
   { g: "group-norm", kw: ["グループ正規化"], title: "グループ正規化",
-    body: "<p>グループ正規化（Group Normalization）は Wu & He（2018）が提案した手法で、<strong>1つのデータごとに</strong>チャネルをいくつかのグループに分け、グループ内（グループのチャネル × 縦 × 横）の平均と分散で正規化する。原論文ではグループ数 32 を標準とした。</p><p>バッチ正規化は、バッチサイズが小さいと統計量の推定が不正確になり、誤差が急に大きくなる。物体検出やセグメンテーション、動画のように、メモリの制約で小さなバッチしか使えない課題で、これが問題になる。グループ正規化はバッチ方向の統計を使わないため、バッチサイズによらず安定した性能を示す。ImageNet で ResNet-50 をバッチサイズ2で学習した実験では、バッチ正規化より誤差が 10.6% 低かった。</p><p>グループ数を1にするとレイヤー正規化と、グループ数をチャネル数と同じにする（1グループに1チャネル）とインスタンス正規化と同じになる。</p>",
+    body: "<p>グループ正規化（Group Normalization）は Wu & He（2018）が提案した手法で、<strong>1つのデータごとに</strong>チャネルをいくつかのグループに分け、グループ内（グループのチャネル × 縦 × 横）の平均と分散で正規化する。原論文ではグループ数 32 を標準とした。</p><p>バッチ正規化は、バッチサイズが小さいと統計量の推定が不正確になり、誤差が急に大きくなる。物体検出やセグメンテーション、動画のように、メモリの制約で小さなバッチしか使えない課題で、これが問題になる。グループ正規化はバッチ方向の統計を使わないため、バッチサイズによらず安定した性能を示す。ImageNet で ResNet-50 を GPU 1台あたりのバッチサイズ2で学習した実験では、誤り率がバッチ正規化の 34.7% に対して 24.1% と、10.6 ポイント低かった。</p><p>グループ数を1にするとレイヤー正規化と、グループ数をチャネル数と同じにする（1グループに1チャネル）とインスタンス正規化と同じになる。</p>",
     exam: "小さなバッチサイズでも安定すること、レイヤー正規化・インスタンス正規化との関係（グループ数の両端）が問われる。" }
   ],
   pitfalls: [
@@ -112,7 +112,9 @@ GK.addText([
     { t: "Ulyanov, Vedaldi & Lempitsky (2016). Instance Normalization: The Missing Ingredient for Fast Stylization", u: "https://arxiv.org/abs/1607.08022" },
     { t: "Wu, Y. & He, K. (2018). Group Normalization", u: "https://arxiv.org/abs/1803.08494" },
     { t: "Vaswani et al. (2017). Attention Is All You Need", u: "https://arxiv.org/abs/1706.03762" },
-    { t: "PyTorch documentation: torch.nn.BatchNorm2d", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.BatchNorm2d.html" }
+    { t: "PyTorch documentation: torch.nn.BatchNorm2d", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.BatchNorm2d.html" },
+    { t: "PyTorch documentation: torch.nn.InstanceNorm2d", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.InstanceNorm2d.html" },
+    { t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 7 Regularization for Deep Learning", u: "https://www.deeplearningbook.org/contents/regularization.html" }
   ] },
 { section: "T20",
   lead: "<p>プーリング層は、特徴マップを小さな領域（例：2×2）に区切り、各領域を最大値や平均値などの代表値1つにまとめて縮小する層である。畳み込み層の後に置かれることが多い。</p><p>プーリング層には<strong>学習するパラメータがない</strong>。領域の大きさとストライドを決めれば計算の仕方が決まり、出力の大きさは畳み込みと同じ式で求められる（2×2・ストライド2なら縦横が半分）。チャネルごとに独立に処理するので、チャネル数は変わらない。主な役割は、特徴マップを小さくして後の計算量を減らすことと、小さな位置ずれに強くすること（不変性の獲得）である。</p>",
@@ -142,7 +144,10 @@ GK.addText([
     { t: "Krizhevsky, Sutskever & Hinton. ImageNet classification with deep convolutional neural networks（Communications of the ACM, 2017）", u: "https://doi.org/10.1145/3065386" },
     { t: "He, Zhang, Ren & Sun (2016). Deep Residual Learning for Image Recognition", u: "https://arxiv.org/abs/1512.03385" },
     { t: "Chen et al. (2018). DeepLab: Semantic Image Segmentation with Deep Convolutional Nets, Atrous Convolution, and Fully Connected CRFs", u: "https://doi.org/10.1109/TPAMI.2017.2699184" },
-    { t: "PyTorch documentation: torch.nn.MaxPool2d", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.MaxPool2d.html" }
+    { t: "PyTorch documentation: torch.nn.MaxPool2d", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.MaxPool2d.html" },
+    { t: "PyTorch documentation: torch.nn.AdaptiveAvgPool2d", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.AdaptiveAvgPool2d.html" },
+    { t: "Springenberg, Dosovitskiy, Brox & Riedmiller (2015). Striving for Simplicity: The All Convolutional Net", u: "https://arxiv.org/abs/1412.6806" },
+    { t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 7（7.4 Dataset Augmentation）", u: "https://www.deeplearningbook.org/contents/regularization.html" }
   ] },
 { section: "T21",
   lead: "<p>スキップ結合は、いくつかの層を飛び越えて、前の層の出力を後ろの層へ直接つなぐ結合である。層の出力に入力をそのまま足すだけの単純な仕組みだが、これによって 100 層を超える非常に深いネットワークを学習できるようになった。</p><p>この節では、スキップ結合の仕組みと役割、それを使った代表的なモデルである ResNet を学ぶ。</p>",
@@ -164,7 +169,8 @@ GK.addText([
     { t: "He, Zhang, Ren & Sun (2016). Deep Residual Learning for Image Recognition", u: "https://arxiv.org/abs/1512.03385" },
     { t: "He, Zhang, Ren & Sun (2016). Deep Residual Learning for Image Recognition（CVPR 2016）", u: "https://doi.org/10.1109/CVPR.2016.90" },
     { t: "He, Zhang, Ren & Sun (2016). Identity Mappings in Deep Residual Networks", u: "https://arxiv.org/abs/1603.05027" },
-    { t: "Simonyan, K. & Zisserman, A. (2014). Very Deep Convolutional Networks for Large-Scale Image Recognition", u: "https://arxiv.org/abs/1409.1556" }
+    { t: "Simonyan, K. & Zisserman, A. (2014). Very Deep Convolutional Networks for Large-Scale Image Recognition", u: "https://arxiv.org/abs/1409.1556" },
+    { t: "Vaswani et al. (2017). Attention Is All You Need", u: "https://arxiv.org/abs/1706.03762" }
   ] },
 { section: "T22",
   lead: "<p>回帰結合層は、ある時刻の出力を次の時刻の自分自身への入力として戻す結合（回帰結合）を持つ層である。回帰結合層を含むネットワークをリカレントニューラルネットワーク（RNN）と呼び、文章・音声・株価のように順序に意味がある時系列データを扱う。</p><p>この節では、RNN の基本構造（エルマンネットワーク・ジョルダンネットワーク）、学習方法（BPTT・教師強制）、学習の課題（勾配消失・勾配爆発）と、それを解決するために生まれたゲート機構（LSTM・GRU）、双方向 RNN を学ぶ。</p>",

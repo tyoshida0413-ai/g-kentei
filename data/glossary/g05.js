@@ -90,7 +90,7 @@ GK.addGlossary([
 /* ── T20 プーリング層 ── */
 { id: "max-pooling", term: "最大値プーリング", reading: "さいだいちぷーりんぐ", aliases: ["最大プーリング", "マックスプーリング", "Max Pooling"], kw: ["最大値プーリング"], home: "T20",
   short: "プーリングの各領域（例：2×2）の中の最大値を出力する方法。最も強く反応した特徴を残すため、特徴の位置が領域の中で少しずれても出力が変わりにくい。CNN で最もよく使われる。",
-  src: [{ t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 9 Convolutional Networks（9.3 Pooling）", u: "https://www.deeplearningbook.org/contents/convnets.html" }, { t: "PyTorch documentation: torch.nn.MaxPool2d", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.MaxPool2d.html" }] },
+  src: [{ t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 9 Convolutional Networks（9.3 Pooling）", u: "https://www.deeplearningbook.org/contents/convnets.html" }, { t: "PyTorch documentation: torch.nn.MaxPool2d", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.MaxPool2d.html" }, { t: "Springenberg, Dosovitskiy, Brox & Riedmiller (2015). Striving for Simplicity: The All Convolutional Net", u: "https://arxiv.org/abs/1412.6806" }] },
 { id: "average-pooling", term: "平均値プーリング", reading: "へいきんちぷーりんぐ", aliases: ["平均プーリング", "アベレージプーリング", "Average Pooling"], kw: ["平均値プーリング"], home: "T20",
   short: "プーリングの各領域の中の値の平均を出力する方法。領域全体の反応をならして残すので、最大値プーリングと比べて、最も強い反応以外の値も出力に反映される。",
   src: [{ t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 9 Convolutional Networks（9.3 Pooling）", u: "https://www.deeplearningbook.org/contents/convnets.html" }, { t: "PyTorch documentation: torch.nn.AvgPool2d", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.AvgPool2d.html" }] },
@@ -99,7 +99,7 @@ GK.addGlossary([
   src: [{ t: "Lin, Chen & Yan (2013). Network In Network", u: "https://arxiv.org/abs/1312.4400" }, { t: "PyTorch documentation: torch.nn.AdaptiveAvgPool2d", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.AdaptiveAvgPool2d.html" }] },
 { id: "invariance", term: "不変性の獲得", reading: "ふへんせいのかくとく", aliases: ["移動不変性", "平行移動不変性", "位置不変性"], kw: ["不変性の獲得"], home: "T20",
   short: "入力が少し変化しても出力（認識結果）が変わらない性質を、モデルに持たせること。CNN ではプーリングで小さな平行移動への不変性が得られる。回転などへの不変性はデータ拡張などで補う。",
-  src: [{ t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 9 Convolutional Networks（9.3 Pooling）", u: "https://www.deeplearningbook.org/contents/convnets.html" }] },
+  src: [{ t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 9 Convolutional Networks（9.3 Pooling）", u: "https://www.deeplearningbook.org/contents/convnets.html" }, { t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 7（7.4 Dataset Augmentation）", u: "https://www.deeplearningbook.org/contents/regularization.html" }] },
 { id: "pooling-layer", term: "プーリング層", reading: "ぷーりんぐそう", aliases: ["プーリング"], kw: [], home: "T20",
   short: "特徴マップを小さな領域に区切り、各領域を最大値や平均値などの代表値1つにまとめて縮小する層。学習するパラメータを持たない。計算量を減らし、小さな位置ずれに強くする。",
   src: [{ t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 9 Convolutional Networks（9.3 Pooling）", u: "https://www.deeplearningbook.org/contents/convnets.html" }] },
