@@ -90,7 +90,7 @@ GK.addText([
 
   /* ── セグメンテーションのモデル（年代順） ── */
   { g: "fcn", kw: ["FCN (Fully Convolutional Netwok)"], title: "FCN（Fully Convolutional Network）",
-    body: "<p>Long、Shelhamer、Darrell（2014）が提案した、<strong>全結合層を使わず畳み込み層だけ</strong>で構成したネットワークによるセマンティックセグメンテーション。</p><p>分類用の CNN（AlexNet・VGG・GoogLeNet）の全結合層を、入力全体を覆う大きさのカーネルの畳み込みとみなして置き換えた。これにより、任意の大きさの画像を入力でき、各位置のクラスを表す小さな特徴マップが出力される。これを<strong>転置畳み込み</strong>で元の画像の大きさまで拡大（アップサンプリング）し、画素ごとのクラスを得る。深い層の粗い特徴だけでは輪郭がぼやけるため、浅い層の細かい特徴を組み合わせる skip 構造（FCN-32s → 16s → 8s）で精度を上げた。以後のセグメンテーションのモデルの基礎となった。なお、シラバスの表記「Netwok」は Network の誤記と考えられる。</p>",
+    body: "<p>Long、Shelhamer、Darrell（2014）が提案した、<strong>全結合層を使わず畳み込み層だけ</strong>で構成したネットワークによるセマンティックセグメンテーション。「畳み込み層だけ」は全結合層を持たないという意味で、プーリング層や活性化関数は使う。</p><p>分類用の CNN（AlexNet・VGG・GoogLeNet）の全結合層を、入力全体を覆う大きさのカーネルの畳み込みとみなして置き換えた。これにより、任意の大きさの画像を入力でき、各位置のクラスを表す小さな特徴マップが出力される。これを<strong>転置畳み込み</strong>で元の画像の大きさまで拡大（アップサンプリング）し、画素ごとのクラスを得る。深い層の粗い特徴だけでは輪郭がぼやけるため、浅い層の細かい特徴を組み合わせる skip 構造（FCN-32s → 16s → 8s）で精度を上げた。以後のセグメンテーションのモデルの基礎となった。なお、シラバスの表記「Netwok」は Network の誤記と考えられる。</p>",
     exam: "「全結合層を使わない」「任意の大きさの入力」「拡大して画素ごとに分類」が要点。" },
   { g: "segnet", kw: ["SegNet"], title: "SegNet",
     body: "<p>ケンブリッジ大学の Badrinarayanan ら（2015）が提案した、<strong>エンコーダ・デコーダ構造</strong>のセマンティックセグメンテーションのモデル。エンコーダは VGG16 の畳み込み層13層と同じ構造で、画像を縮小しながら特徴を取り出す。デコーダは特徴マップを元の解像度まで拡大し、画素ごとに分類する。</p><p>特徴は、デコーダでの拡大の方法である。エンコーダの最大値プーリングで「どの位置の値を最大として選んだか」（<strong>プーリングのインデックス</strong>）を記録しておき、デコーダはその位置に値を戻して拡大する。拡大のための重みを学習する必要がなく、メモリの使用量とパラメータの数を抑えられる。道路の風景などのシーンの理解を主な用途として設計された。</p>",
@@ -118,7 +118,7 @@ GK.addText([
     "SegNet はプーリングのインデックスを、U-Net は特徴マップそのものを、エンコーダからデコーダへ渡す。",
     "MnasNet は「実機の速度も目的に入れた NAS」、EfficientNet は「NAS で作った基本モデルを深さ・幅・解像度の複合スケーリングで拡大」。どちらも NAS を使うが要点が違う。",
     "姿勢推定のトップダウン型は人を検出してから1人ずつ推定し、ボトムアップ型（OpenPose）は部位を検出してから人ごとにまとめる。",
-    "ViT は CNN より帰納バイアスが弱いため、中規模のデータだけでは ResNet に劣り、大規模データでの事前学習で真価を発揮する。",
+    "ViT は CNN より帰納バイアスが弱いため、中規模のデータだけで強い正則化を使わずに学習すると同程度の大きさの ResNet に劣り、大規模データでの事前学習で真価を発揮する。",
     "FCN は Fully Convolutional Network（畳み込み層だけのネットワーク）であり、全結合（Fully Connected）層を並べたネットワークとは逆の意味である。"
   ],
   sources: [
@@ -143,9 +143,12 @@ GK.addText([
     { t: "Girshick (2015). Fast R-CNN", u: "https://arxiv.org/abs/1504.08083" },
     { t: "Ren et al. (2015). Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks", u: "https://arxiv.org/abs/1506.01497" },
     { t: "Redmon et al. (2015). You Only Look Once: Unified, Real-Time Object Detection", u: "https://arxiv.org/abs/1506.02640" },
+    { t: "Redmon & Farhadi (2016). YOLO9000: Better, Faster, Stronger", u: "https://arxiv.org/abs/1612.08242" },
+    { t: "Redmon & Farhadi (2018). YOLOv3: An Incremental Improvement", u: "https://arxiv.org/abs/1804.02767" },
     { t: "Liu et al. (2015). SSD: Single Shot MultiBox Detector", u: "https://arxiv.org/abs/1512.02325" },
     { t: "Lin et al. (2016). Feature Pyramid Networks for Object Detection", u: "https://arxiv.org/abs/1612.03144" },
     { t: "He et al. (2017). Mask R-CNN", u: "https://arxiv.org/abs/1703.06870" },
+    { t: "Lin et al. (2017). Focal Loss for Dense Object Detection", u: "https://arxiv.org/abs/1708.02002" },
     { t: "Long, Shelhamer & Darrell (2014). Fully Convolutional Networks for Semantic Segmentation", u: "https://arxiv.org/abs/1411.4038" },
     { t: "Badrinarayanan, Kendall & Cipolla (2015). SegNet: A Deep Convolutional Encoder-Decoder Architecture for Image Segmentation", u: "https://arxiv.org/abs/1511.00561" },
     { t: "Ronneberger, Fischer & Brox (2015). U-Net: Convolutional Networks for Biomedical Image Segmentation", u: "https://arxiv.org/abs/1505.04597" },
