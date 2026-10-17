@@ -440,7 +440,7 @@ GK.addQuestions([
   choices: ["Sutskever ら（2014）の Seq2Seq は、Attention を使わずに入力文を固定長のベクトルにまとめ、入力文の単語の順序を逆にすると性能が大きく上がると報告した", "Multi-Head Attention では、各ヘッドがモデルの全次元のまま Attention を計算するので、全体の計算量はヘッドの数にほぼ比例して増える", "Bahdanau ら（2014）は、デコーダが訳語を1つ出すたびに入力文の各単語への重みを計算し直す Attention を、機械翻訳に導入した", "Transformer の原論文は、学習で求める位置の埋め込みも試し、sin・cos 関数による位置エンコーディングとほぼ同じ結果を得た"],
   ans: 1,
   exp: "Seq2Seq（Sutskever ら, 2014）は入力文を固定長のベクトルにまとめるため、長い文で情報が失われやすかった。Bahdanau ら（2014）はこれを補う Attention を導入し、Vaswani ら（2017）は RNN を使わず Attention を中心に構成した Transformer を提案した。Multi-Head Attention は各ヘッドの次元を d<sub>model</sub> ÷ ヘッド数に小さくするので、計算量を大きく増やさずに、ヘッドごとに異なる観点で注目先を学習できる。",
-  why: ["適切。入力文の単語の順序を逆にすると、入力と出力の近い単語どうしの距離が縮まり、学習しやすくなると説明している。", "不適切（これが正解）。原論文では d<sub>model</sub> ＝ 512 を8ヘッドに分け、各ヘッドの次元を 64 に小さくしているので、全体の計算量は全次元で1つの Attention を計算する場合とほぼ同じである。", "適切。固定長のベクトル1つに頼る必要がなくなり、長い文でも翻訳しやすくなった。", "適切。学習時より長い系列にも対応できる可能性があるとして、sin・cos の方式を選んだ。"],
+  why: ["適切。入力文の単語の順序を逆にすると、入力と出力の近い単語どうしの距離が縮まり、学習しやすくなると説明している。", "不適切（これが正解）。原論文の基本の構成では d<sub>model</sub> ＝ 512 を8ヘッドに分け、各ヘッドの次元を 64 に小さくしているので、全体の計算量は全次元で1つの Attention を計算する場合とほぼ同じである。", "適切。固定長のベクトル1つに頼る必要がなくなり、長い文でも翻訳しやすくなった。", "適切。学習時より長い系列にも対応できる可能性があるとして、sin・cos の方式を選んだ。"],
   src: [{ t: "Sutskever, Vinyals & Le (2014). Sequence to Sequence Learning with Neural Networks", u: "https://arxiv.org/abs/1409.3215" }, { t: "Bahdanau, Cho & Bengio (2014). Neural Machine Translation by Jointly Learning to Align and Translate", u: "https://arxiv.org/abs/1409.0473" }, { t: "Vaswani et al. (2017). Attention Is All You Need", u: "https://arxiv.org/abs/1706.03762" }] },
 /* ── T24 オートエンコーダ ── */
 { id: "M-061", set: "mock", sec: "T24", kw: ["VQ-VAE・ info VAE・β-VAE","変分オートエンコーダ (VAE)"], type: "best",
