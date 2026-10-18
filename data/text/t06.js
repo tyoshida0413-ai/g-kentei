@@ -237,7 +237,7 @@ GK.addText([
     body: "<p>ある言語の文章を、コンピュータで別の言語に翻訳すること。方式は次の順に発展した。</p><ul><li><strong>ルールベース機械翻訳</strong>：人が辞書と文法の規則を書いて翻訳する（T02）</li><li><strong>統計的機械翻訳</strong>：大量の対訳コーパスから、訳語の対応などの確率を学習する（1990年ごろ〜）</li><li><strong>ニューラル機械翻訳</strong>：ニューラルネットワークで原文から訳文を直接生成する。Seq2Seq に Attention を加えたモデル、さらに Transformer が使われるようになった（2014年ごろ〜）</li></ul><p>2016年、Google は Google 翻訳の中国語から英語への翻訳を、フレーズベースの統計的機械翻訳からニューラル機械翻訳（GNMT）に切り替え、人による評価で翻訳の誤りが大きく減ったと報告した。訳の品質の自動評価には、参照訳との n-gram の一致度を測る BLEU などが使われる。</p>",
     exam: "ルールベース → 統計的 → ニューラルという発展の順序と、それぞれの特徴が問われる。" },
   { g: "smt", kw: ["統計的機械翻訳"], title: "統計的機械翻訳",
-    body: "<p>大量の<strong>対訳コーパス</strong>（原文と訳文の対）から、単語や句の対応とその確率を統計的に学習して翻訳する方式。IBM の Brown ら（1990）が基本的な枠組みを示した。</p><p>原文 f が与えられたとき、訳文の候補 e のうち、確率 P(e | f) が最大のものを選ぶ。ベイズの定理により、これは次の積を最大にすることと同じである。</p><div class='formula'>P(e | f) ∝ P(e) × P(f | e)</div><p>P(e) は訳文としての自然さを表す<strong>言語モデル</strong>（n-gram 言語モデルなど）、P(f | e) は単語や句の対応を表す<strong>翻訳モデル</strong>である。のちに、単語単位ではなく句（フレーズ）単位で対応を学ぶフレーズベースの方式（Koehn ら, 2003）が主流になった。人が規則を書く必要はないが、大量の対訳データを必要とする。2010年代半ば以降、ニューラル機械翻訳に置き換えられていった。</p>",
+    body: "<p>大量の<strong>対訳コーパス</strong>（原文と訳文の対）から、単語や句の対応とその確率を統計的に学習して翻訳する方式。IBM の Brown ら（1990）が基本的な枠組みを示した。</p><p>原文 f が与えられたとき、訳文の候補 e のうち、確率 P(e | f) が最大のものを選ぶ。ベイズの定理により、これは次の積を最大にすることと同じである。</p><div class='formula'>P(e | f) ∝ P(e) × P(f | e)</div><p>P(e) は訳文としての自然さを表す<strong>言語モデル</strong>（n-gram 言語モデルなど）、P(f | e) は単語や句の対応を表す<strong>翻訳モデル</strong>である。のちに、単語単位ではなく句（フレーズ）単位で対応を学ぶフレーズベースの方式（Koehn ら, 2003 など）が主流になった。人が規則を書く必要はないが、大量の対訳データを必要とする。2010年代半ば以降、ニューラル機械翻訳に置き換えられていった。</p>",
     exam: "「対訳コーパスから確率を学ぶ」「翻訳モデル × 言語モデル」が要点。ルールベースやニューラル機械翻訳との区別が問われる。" },
   { g: "sentiment-analysis", kw: ["感情分析"], title: "感情分析",
     body: "<p>文章に表れた書き手の<strong>意見や感情</strong>を判定するタスク。評判分析・意見マイニング（opinion mining）とも呼ばれる。典型的なのは、商品や映画のレビューが<strong>肯定的か否定的か（極性）</strong>を分類する問題で、中立を加えた3分類や、星の数のような段階の推定、喜び・怒りなどの感情の種類の分類もある。</p><p>Pang ら（2002）は、映画のレビューを題材に、ナイーブベイズ・最大エントロピー法・SVM による機械学習で肯定・否定を分類し、人が考えた手がかりの語による方法を上回った。一方で、話題による文書の分類よりは難しいことも示した。例えば「こんな映画をよく最後まで見られるものだ」のように、はっきり否定的な単語を含まない否定的な文があるためである。その後、ELMo や BERT などの事前学習済みのモデルで精度が大きく向上した（GLUE にも感情分析のタスク SST-2 が含まれる）。製品やサービスの評判の把握、SNS の投稿の分析などに使われる。音声から話し手の感情を推定する研究もある（T28）。</p>",
@@ -246,15 +246,15 @@ GK.addText([
     body: "<p>自然言語で書かれた質問に対して、答えを返すタスク。主な形は次の2つである。</p><ul><li><strong>読解型（機械読解）</strong>：与えられた文章を読み、答えとなる部分を抜き出す。代表的なデータセットの SQuAD（2016）は、Wikipedia の記事に対する10万件以上の質問からなり、答えは記事の一部分である</li><li><strong>検索と組み合わせる型</strong>：大量の文書から関係する文書を検索し、その中から答えを探す。情報検索の技術を使う</li></ul><p>IBM のワトソン（T04）は、アメリカのクイズ番組で人間のチャンピオンと対戦できる水準を目指して開発された質問応答システムである（Ferrucci ら, 2010）。BERT などの事前学習済みのモデルで読解型の精度は大きく向上し、現在は、大規模言語モデルが検索した文書を参照しながら質問に答える使い方（RAG）も広がっている。</p>",
     exam: "読解型（文章から答えの部分を抜き出す）の例として SQuAD が問われる。" },
   { g: "information-retrieval", kw: ["情報検索"], title: "情報検索",
-    body: "<p>大量の文書などの集まりから、利用者の情報要求（検索エンジンに入力するクエリなど）を満たすものを探し出すこと。Web の検索エンジンが代表例である。基本的な仕組みは次のとおり。</p><ul><li>あらかじめ、単語ごとにそれを含む文書の一覧を記録した<strong>転置インデックス</strong>を作っておき、クエリの単語を含む文書をすばやく見つける</li><li>文書とクエリを TF-IDF などで重み付けしたベクトルで表し、コサイン類似度などで関連の度合いを計算して、関連の高い順に並べる</li></ul><p>評価には、検索結果のうち正しいものの割合（適合率）や、正しい文書のうち検索できたものの割合（再現率）などを使う。近年は、ニューラルネットワークで文書とクエリを密なベクトルに変換し、意味の近さで探す方法も使われる。また、大規模言語モデルに検索した文書を参照させて答えを生成する<strong>検索拡張生成（RAG）</strong>は、ハルシネーションを減らす方法の1つとして使われている。</p>",
+    body: "<p>大量の文書などの集まりから、利用者の情報要求（検索エンジンに入力する<span class='no-terms'>クエリ</span>など）を満たすものを探し出すこと。Web の検索エンジンが代表例である。基本的な仕組みは次のとおり。</p><ul><li>あらかじめ、単語ごとにそれを含む文書の一覧を記録した<strong>転置インデックス</strong>を作っておき、<span class='no-terms'>クエリ</span>の単語を含む文書をすばやく見つける</li><li>文書と<span class='no-terms'>クエリ</span>を TF-IDF などで重み付けしたベクトルで表し、コサイン類似度などで関連の度合いを計算して、関連の高い順に並べる</li></ul><p>評価には、検索結果のうち正しいものの割合（適合率）や、正しい文書のうち検索できたものの割合（再現率）などを使う。近年は、ニューラルネットワークで文書と<span class='no-terms'>クエリ</span>を密なベクトルに変換し、意味の近さで探す方法も使われる。また、大規模言語モデルに検索した文書を参照させて答えを生成する<strong>検索拡張生成（RAG）</strong>は、ハルシネーションを減らす方法の1つとして使われている。</p>",
     exam: "転置インデックス・TF-IDF・適合率と再現率の役割が問われる。" },
   { g: "summarization", kw: ["文書要約"], title: "文書要約",
-    body: "<p>文書の重要な内容を、短い文章にまとめるタスク。方法は大きく2つある。</p><ul><li><strong>抽出型要約</strong>：元の文書から重要な文（や語句）を選び出して並べる。元の文をそのまま使うので文法の誤りは起きにくいが、言い換えたり、複数の文をまとめたりはできない</li><li><strong>生成型要約（抽象型要約）</strong>：文書の内容をもとに、元の文書にない表現も使って新しい文を生成する。Attention を用いたニューラルネットワークのモデル（Rush ら, 2015）などで研究が進み、現在は Transformer や大規模言語モデルが使われる</li></ul><p>生成型要約は自然な要約を作れる一方、事実の細部を誤って再現したり、同じ内容を繰り返したりする問題が指摘された。See ら（2017）は、元の文書から単語をそのままコピーする仕組みと、新しい単語を生成する仕組みを組み合わせて（Pointer-Generator Network）、これを改善した。ニュース記事などの要約に使われる。</p>",
+    body: "<p>文書の重要な内容を、短い文章にまとめるタスク。方法は大きく2つある。</p><ul><li><strong>抽出型要約</strong>：元の文書から重要な文（や語句）を選び出して並べる。元の文をそのまま使うので文法の誤りは起きにくいが、言い換えたり、複数の文をまとめたりはできない</li><li><strong>生成型要約（抽象型要約）</strong>：文書の内容をもとに、元の文書にない表現も使って新しい文を生成する。Attention を用いたニューラルネットワークのモデル（Rush ら, 2015）などで研究が進み、現在は Transformer や大規模言語モデルが使われる</li></ul><p>生成型要約は自然な要約を作れる一方、事実の細部を誤って再現したり、同じ内容を繰り返したりする問題が指摘された。See ら（2017）は、元の文書から単語をそのままコピーする仕組みと、新しい単語を生成する仕組みを組み合わせて（Pointer-Generator Network）事実の再現を正確にし、すでに要約した内容を記録する仕組み（カバレッジ）で繰り返しを抑えた。ニュース記事などの要約に使われる。</p>",
     exam: "抽出型（文を選ぶ）と生成型（新しい文を作る）の違いが問われる。" }
   ],
   pitfalls: [
     "形態素解析は文を形態素に区切って品詞を付ける処理、構文解析は語と語の関係（文の構造）を求める処理。日本語ではふつう形態素解析を先に行う。",
-    "ワンホットベクトルと BoW は疎な表現で、意味の近さを表せない。分散表現（単語埋め込み）は低次元の密なベクトルで、意味の近い単語ほど近くなる。",
+    "ワンホットベクトルと BoW は疎な表現で、単語どうしの意味の近さを表せない。分散表現（単語埋め込み）は低次元の密なベクトルで、意味の近い単語ほど近くなる。",
     "BoW は語順を無視する。n-gram を数えると語順の情報を一部残せる。",
     "TF-IDF では、どの文書にも出てくる語ほど IDF が小さく、重みは小さくなる（出現回数が多いほど重要、とは限らない）。",
     "CBOW は周りの単語から中心の単語を、スキップグラムは中心の単語から周りの単語を予測する。学習が速いのは CBOW。",
@@ -276,12 +276,15 @@ GK.addText([
     { t: "Bengio et al. (2003). A Neural Probabilistic Language Model (JMLR 3)", u: "https://www.jmlr.org/papers/v3/bengio03a.html" },
     { t: "Mikolov et al. (2013). Efficient Estimation of Word Representations in Vector Space", u: "https://arxiv.org/abs/1301.3781" },
     { t: "Mikolov et al. (2013). Distributed Representations of Words and Phrases and their Compositionality", u: "https://arxiv.org/abs/1310.4546" },
+    { t: "Mikolov, Yih & Zweig (2013). Linguistic Regularities in Continuous Space Word Representations. NAACL-HLT 2013", u: "https://aclanthology.org/N13-1090/" },
+    { t: "Pennington, Socher & Manning (2014). GloVe: Global Vectors for Word Representation", u: "https://aclanthology.org/D14-1162/" },
     { t: "Bojanowski et al. (2016). Enriching Word Vectors with Subword Information", u: "https://arxiv.org/abs/1607.04606" },
     { t: "Joulin et al. (2016). Bag of Tricks for Efficient Text Classification", u: "https://arxiv.org/abs/1607.01759" },
     { t: "fastText（公式サイト）", u: "https://fasttext.cc/" },
     { t: "Hochreiter, S. & Schmidhuber, J. (1997). Long Short-Term Memory", u: "https://doi.org/10.1162/neco.1997.9.8.1735" },
     { t: "Gers, Schmidhuber & Cummins (2000). Learning to Forget: Continual Prediction with LSTM", u: "https://doi.org/10.1162/089976600300015015" },
     { t: "Sutskever, Vinyals & Le (2014). Sequence to Sequence Learning with Neural Networks", u: "https://arxiv.org/abs/1409.3215" },
+    { t: "Vinyals & Le (2015). A Neural Conversational Model", u: "https://arxiv.org/abs/1506.05869" },
     { t: "Peters et al. (2018). Deep contextualized word representations", u: "https://arxiv.org/abs/1802.05365" },
     { t: "Devlin et al. (2018). BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding", u: "https://arxiv.org/abs/1810.04805" },
     { t: "Wang et al. (2018). GLUE: A Multi-Task Benchmark and Analysis Platform for Natural Language Understanding", u: "https://arxiv.org/abs/1804.07461" },
@@ -302,7 +305,9 @@ GK.addText([
     { t: "Rajpurkar et al. (2016). SQuAD: 100,000+ Questions for Machine Comprehension of Text", u: "https://arxiv.org/abs/1606.05250" },
     { t: "Ferrucci et al. (2010). Building Watson: An Overview of the DeepQA Project", u: "https://doi.org/10.1609/aimag.v31i3.2303" },
     { t: "Rush, Chopra & Weston (2015). A Neural Attention Model for Abstractive Sentence Summarization", u: "https://arxiv.org/abs/1509.00685" },
-    { t: "See, Liu & Manning (2017). Get To The Point: Summarization with Pointer-Generator Networks", u: "https://arxiv.org/abs/1704.04368" }
+    { t: "See, Liu & Manning (2017). Get To The Point: Summarization with Pointer-Generator Networks", u: "https://arxiv.org/abs/1704.04368" },
+    { t: "Lewis et al. (2019). BART: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension", u: "https://arxiv.org/abs/1910.13461" },
+    { t: "Zhang et al. (2023). Benchmarking Large Language Models for News Summarization", u: "https://arxiv.org/abs/2301.13848" }
   ] }
 ]);
 
