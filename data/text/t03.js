@@ -94,10 +94,10 @@ GK.addText([
 /* ── T08 教師なし学習 ── */
 GK.addText([
 { section: "T08",
-  lead: "<p>教師なし学習は、正解（教師データ）を与えず、<strong>特徴量だけ</strong>から、データの中にあるまとまりや構造を見つけ出す方法である。正解ラベルを付ける手間がかからないため、データの全体像をつかむ探索的な分析や、他の学習の前処理によく使われる。</p><p>この節では、似たデータをグループに分ける<strong>クラスタリング</strong>（k-means 法、ウォード法）、変数の数を減らす<strong>次元削減</strong>（主成分分析、特異値分解、多次元尺度構成法、t-SNE）、文書の話題を推定する<strong>トピックモデル</strong>、そして推薦システムの考え方（協調フィルタリング、コンテンツベースフィルタリング）を学ぶ。</p>",
+  lead: "<p>教師なし学習は、正解（教師データ）を与えず、<strong>特徴量だけ</strong>から、データの中にあるまとまりや構造を見つけ出す方法である。正解ラベルを用意する必要がなく、データの全体像をつかむ探索的な分析や、他の学習の前処理によく使われる。</p><p>この節では、似たデータをグループに分ける<strong>クラスタリング</strong>（k-means 法、ウォード法）、変数の数を減らす<strong>次元削減</strong>（主成分分析、特異値分解、多次元尺度構成法、t-SNE）、文書の話題を推定する<strong>トピックモデル</strong>、そして推薦システムの考え方（協調フィルタリング、コンテンツベースフィルタリング）を学ぶ。</p>",
   items: [
   { g: "clustering", kw: ["クラスタリング"], title: "クラスタリング",
-    body: "<p>正解ラベルのないデータを、<strong>似ているもの同士</strong>が同じグループ（クラスタ）になるように分ける手法。「似ている」はユークリッド距離などの距離や類似度で測る。大きく2種類ある。</p><ul><li><strong>非階層的クラスタリング</strong>：あらかじめ決めた数のクラスタに分ける。代表例は k-means 法</li><li><strong>階層的クラスタリング</strong>：似ているデータから順に併合して、入れ子の階層を作る。代表例はウォード法。結果はデンドログラムで表す</li></ul><p>ビジネスでは、購買の傾向が似た顧客をまとめる顧客の分類（セグメンテーション）などに使われる。分類問題と違って正解のグループは与えないため、各クラスタが何を意味するかは、分析する人が後から解釈する。</p>",
+    body: "<p>正解ラベルのないデータを、<strong>似ているもの同士</strong>が同じグループ（クラスタ）になるように分ける手法。「似ている」はユークリッド距離などの距離や類似度で測る。大きく2種類ある。</p><ul><li><strong><span class='no-terms'>非階層的クラスタリング</span></strong>：あらかじめ決めた数のクラスタに分ける。代表例は k-means 法</li><li><strong>階層的クラスタリング</strong>：似ているデータから順に併合して、入れ子の階層を作る。代表例はウォード法。結果はデンドログラムで表す</li></ul><p>ビジネスでは、購買の傾向が似た顧客をまとめる顧客の分類（セグメンテーション）などに使われる。分類問題と違って正解のグループは与えないため、各クラスタが何を意味するかは、分析する人が後から解釈する。</p>",
     exam: "分類（正解ラベルあり・教師あり）とクラスタリング（正解ラベルなし・教師なし）の違いが問われる。" },
   { g: "k-means", kw: ["k-means 法"], title: "k-means 法",
     body: "<p>データを、あらかじめ指定した <strong>k 個</strong>のクラスタに分ける代表的な手法。各クラスタは中心（所属するデータの平均の位置）で表す。手順は次のとおり。</p><ol><li>k 個の中心を初期値として選ぶ</li><li>各データを、最も近い中心のクラスタに割り当てる</li><li>各クラスタの中心を、所属するデータの平均の位置に更新する</li><li>中心がほとんど動かなくなるまで、2 と 3 を繰り返す</li></ol><p>この手順は、各データと所属クラスタの中心との距離の二乗和（クラスタ内平方和）を小さくしていく。計算が速く大きなデータにも使えるが、クラスタ数 k は人が決める必要がある。また、初期値によって結果が変わり、局所最適解に収束することがある。そこで、初期の中心どうしを離して選ぶ k-means++ を使ったり、初期値を変えて何度か実行したりする。球状で広がり（ばらつき）が同程度のクラスタを想定しているため、細長い形や入り組んだ形のクラスタはうまく分けられない。</p>",
@@ -118,7 +118,7 @@ GK.addText([
     body: "<p>行列 A を、3つの行列の積に分解する方法。</p><div class='formula'>A = UΣV<sup>T</sup></div><p>U と V は直交行列、Σ は<strong>特異値</strong>（0以上の値）を大きい順に対角に並べた行列である。大きい特異値の上位 k 個の成分だけを残すと、ランク k の行列の中で元の行列を（誤差の二乗和の意味で）最もよく近似する行列が得られる（Eckart & Young, 1936）。</p><p>この性質から、次元削減やデータの圧縮、ノイズの除去に使われる。文書×単語の行列に適用して意味的な近さを捉える潜在意味解析（LSA）や、利用者×商品の評価行列を低ランクで近似する推薦システム（行列分解）が応用例である。主成分分析も、中心化したデータ行列の特異値分解で計算できる。</p>",
     exam: "A = UΣV<sup>T</sup> の形と、特異値の大きい成分だけを残して低ランクで近似する（次元削減する）使い方が問われる。" },
   { g: "mds", kw: ["多次元尺度構成法 (MDS)"], title: "多次元尺度構成法（MDS）",
-    body: "<p>データどうしの<strong>距離（似ていなさ）</strong>を入力として、その距離の関係ができるだけ保たれるように、各データを2次元や3次元などの低次元空間に配置する手法（Torgerson, 1952 など）。都市間の距離の表から、都市の位置を表す地図を復元するようなイメージである。</p><p>距離の値そのものをなるべく再現しようとする計量 MDS と、距離の大小の順序だけを保とうとする非計量 MDS（Kruskal, 1964）がある。元の特徴量がなくても、「商品どうしがどれだけ似ているか」の評価のような距離の情報さえあれば、位置関係を図にできる。なお、距離がユークリッド距離の場合、古典的な MDS は主成分分析と同じ結果になる。</p>",
+    body: "<p>データどうしの<strong>距離（似ていなさ）</strong>を入力として、その距離の関係ができるだけ保たれるように、各データを2次元や3次元などの低次元空間に配置する手法（Torgerson, 1952 など）。都市間の距離の表から、都市の位置を表す地図を復元するようなイメージである。</p><p>距離の値そのものをなるべく再現しようとする計量 MDS と、距離の大小の順序だけを保とうとする非計量 MDS（Shepard, 1962；Kruskal, 1964）がある。元の特徴量がなくても、「商品どうしがどれだけ似ているか」の評価のような距離の情報さえあれば、位置関係を図にできる。なお、距離がユークリッド距離の場合、古典的な MDS は主成分分析と同じ結果になる。</p>",
     exam: "「データ間の距離（類似度）の関係を保つように低次元に配置する」が要点。" },
   { g: "t-sne", kw: ["t-SNE"], title: "t-SNE",
     body: "<p>高次元のデータを2次元や3次元に写して<strong>可視化</strong>するための非線形の次元削減手法（van der Maaten & Hinton, 2008）。先行する SNE（Hinton & Roweis, 2002）を改良したものである。</p><p>元の空間でのデータどうしの近さを正規分布にもとづく確率で、低次元空間での近さを<strong>t 分布</strong>（スチューデントの t 分布）にもとづく確率で表し、両者の違い（カルバック・ライブラー情報量）が小さくなるように点の配置を求める。裾の重い t 分布を使うことで、点が図の中央に密集してしまう問題を和らげている。</p><p>近いデータ同士のまとまり（局所的な構造）をよく保つ一方、クラスタ間の距離やクラスタの大きさといった大域的な構造は保たれるとは限らない。計算量が大きく、主な用途は可視化である。近傍の広さを決めるパープレキシティの設定によって結果が変わる。</p>",
@@ -130,13 +130,13 @@ GK.addText([
     body: "<p>代表的なトピックモデル（Blei, Ng & Jordan, 2003）。文書が次のようにして作られると考える確率モデル（生成モデル）である。</p><ul><li>各文書には、トピックの混ざり具合（例：スポーツ70%・経済30%）がある</li><li>文書中の各単語は、まずその混ざり具合に従ってトピックを1つ選び、次にそのトピックの単語の分布から単語を1つ選んで書かれる</li></ul><p>トピックの混ざり具合の事前分布に<strong>ディリクレ分布</strong>を仮定しており、名前の「ディリクレ」はこれに由来する。観測できるのは単語だけで、トピックは観測できない潜在的な変数として推定する。</p><p>なお、教師あり学習の線形判別分析（Linear Discriminant Analysis）も LDA と略すため、文脈で区別する。</p>",
     exam: "トピックモデルの代表例であること、1つの文書に複数のトピックが含まれるとみなすことが問われる。線形判別分析と略称が同じ点に注意。" },
   { g: "collaborative-filtering", kw: ["協調フィルタリング"], title: "協調フィルタリング",
-    body: "<p>推薦システム（利用者に合う商品や情報を薦める仕組み）の代表的な方法。多数の利用者の評価・購買・閲覧の<strong>履歴</strong>だけを使い、「好みの似た人が好んだものは、この人も好むだろう」と考えて推薦する。</p><ul><li><strong>ユーザーベース</strong>：対象の利用者と履歴の似た利用者を探し、その人たちが高く評価したものを薦める</li><li><strong>アイテムベース</strong>：同じ利用者に一緒に評価・購入されやすい商品どうしを似ているとみなし、購入済みの商品に似た商品を薦める（Sarwar ら, 2001）</li></ul><p>商品の中身（ジャンルや説明文）の情報がなくても使えるが、履歴のない新しい利用者や商品には推薦できない（コールドスタート問題）。評価行列を低ランクの行列の積で近似する行列分解（Koren ら, 2009）も、協調フィルタリングの方法として広く使われる。この語は、Goldberg ら（1992）が情報の選別システム Tapestry を発表した論文の題名にも使われている。</p>",
+    body: "<p>推薦システム（利用者に合う商品や情報を薦める仕組み）の代表的な方法。多数の利用者の評価・購買・閲覧の<strong>履歴</strong>だけを使い、「好みの似た人が好んだものは、この人も好むだろう」と考えて推薦する。</p><ul><li><strong>ユーザーベース</strong>：対象の利用者と履歴の似た利用者を探し、その人たちが高く評価したものを薦める</li><li><strong>アイテムベース</strong>：同じ利用者たちから似た評価を受けている商品どうしや、一緒に購入されやすい商品どうしを似ているとみなし、その利用者が高く評価した商品や購入済みの商品に似た商品を薦める（Sarwar ら, 2001；Linden ら, 2003）</li></ul><p>商品の中身（ジャンルや説明文）の情報がなくても使えるが、履歴のない新しい利用者や商品には推薦できない（コールドスタート問題）。評価行列を低ランクの行列の積で近似する行列分解（Koren ら, 2009）も、協調フィルタリングの方法として広く使われる。この語は、Goldberg ら（1992）が情報の選別システム Tapestry を発表した論文の題名にも使われている。</p>",
     exam: "利用者の行動履歴を使う協調フィルタリングと、商品の属性を使うコンテンツベースフィルタリングの対比、およびコールドスタート問題が頻出。" },
   { g: "content-based-filtering", kw: ["コンテンツベースフィルタリング"], title: "コンテンツベースフィルタリング",
     body: "<p>商品や記事そのものの<strong>属性</strong>（ジャンル、キーワード、作者、価格帯など）を使う推薦の方法。利用者が過去に高く評価したものの属性から好みを表し、それと属性の似た商品を薦める（例：SF 小説をよく読む人に、別の SF 小説を薦める）。</p><p>他の利用者の履歴を必要としないため、まだ誰も評価していない<strong>新しい商品</strong>でも、属性が分かれば推薦できる。一方、属性の情報を用意する手間がかかり、過去に好んだものと似たものばかりが薦められて、意外な発見が生まれにくい。履歴のない新しい利用者については、好みが分からないため、この方法でも推薦は難しい。協調フィルタリングと組み合わせたハイブリッド型もよく使われる。</p>",
     exam: "「商品の属性（内容）の類似度を使う」「新しい商品にも対応できる」が要点。" },
   { g: "cold-start", kw: ["コールドスタート問題"], title: "コールドスタート問題",
-    body: "<p>推薦システムで、<strong>新しい利用者</strong>や<strong>新しい商品</strong>には評価・購買の履歴がほとんどないため、適切な推薦ができない問題（Schein ら, 2002 など）。他の利用者の履歴だけに頼る協調フィルタリングで、特に深刻になる。</p><p>対処として、新しい商品には属性を使うコンテンツベースフィルタリングを併用する、新しい利用者には登録時に好みのジャンルを尋ねる、履歴がたまるまでは人気の高い商品を薦める、などの方法がとられる。</p>",
+    body: "<p>推薦システムで、<strong>新しい利用者</strong>や<strong>新しい商品</strong>には評価・購買の履歴がほとんどないため、適切な推薦ができない問題（Schein ら, 2002；Koren ら, 2009 など）。他の利用者の履歴だけに頼る協調フィルタリングで、特に深刻になる。</p><p>対処として、新しい商品には属性を使うコンテンツベースフィルタリングを併用する、新しい利用者には登録時に好みのジャンルを尋ねる、履歴がたまるまでは人気の高い商品を薦める、などの方法がとられる。</p>",
     exam: "協調フィルタリングの弱点としてのコールドスタート問題と、その対処（コンテンツベースの併用など）が問われる。" }
   ],
   pitfalls: [
@@ -150,16 +150,23 @@ GK.addText([
   ],
   sources: [
     { t: "scikit-learn User Guide: Unsupervised learning", u: "https://scikit-learn.org/stable/unsupervised_learning.html" },
+    { t: "scikit-learn Glossary of Common Terms and API Elements（unsupervised learning）", u: "https://scikit-learn.org/stable/glossary.html" },
     { t: "scikit-learn User Guide: Clustering", u: "https://scikit-learn.org/stable/modules/clustering.html" },
     { t: "scikit-learn User Guide: Decomposing signals in components", u: "https://scikit-learn.org/stable/modules/decomposition.html" },
     { t: "scikit-learn User Guide: Manifold learning", u: "https://scikit-learn.org/stable/modules/manifold.html" },
+    { t: "James, Witten, Hastie & Tibshirani. An Introduction to Statistical Learning (2nd ed.), Chapter 12 Unsupervised Learning", u: "https://www.statlearning.com/" },
+    { t: "Hastie, Tibshirani & Friedman. The Elements of Statistical Learning (2nd ed.), Chapter 14 Unsupervised Learning", u: "https://hastie.su.domains/ElemStatLearn/" },
     { t: "Ward, J. H. (1963). Hierarchical Grouping to Optimize an Objective Function", u: "https://doi.org/10.1080/01621459.1963.10500845" },
     { t: "van der Maaten, L. & Hinton, G. (2008). Visualizing Data using t-SNE. JMLR 9", u: "https://www.jmlr.org/papers/v9/vandermaaten08a.html" },
+    { t: "Wattenberg, M., Viégas, F. & Johnson, I. (2016). How to Use t-SNE Effectively. Distill", u: "https://doi.org/10.23915/distill.00002" },
     { t: "Blei, D. M., Ng, A. Y. & Jordan, M. I. (2003). Latent Dirichlet Allocation. JMLR 3", u: "https://www.jmlr.org/papers/v3/blei03a.html" },
     { t: "Goldberg, D. et al. (1992). Using collaborative filtering to weave an information tapestry", u: "https://doi.org/10.1145/138859.138867" },
+    { t: "Linden, G., Smith, B. & York, J. (2003). Amazon.com recommendations: item-to-item collaborative filtering. IEEE Internet Computing 7(1)", u: "https://doi.org/10.1109/MIC.2003.1167344" },
+    { t: "Koren, Y., Bell, R. & Volinsky, C. (2009). Matrix Factorization Techniques for Recommender Systems", u: "https://doi.org/10.1109/MC.2009.263" },
     { t: "Pazzani, M. J. & Billsus, D. (2007). Content-Based Recommendation Systems", u: "https://doi.org/10.1007/978-3-540-72079-9_10" },
     { t: "Adomavicius, G. & Tuzhilin, A. (2005). Toward the next generation of recommender systems: a survey of the state-of-the-art and possible extensions", u: "https://doi.org/10.1109/TKDE.2005.99" },
-    { t: "Schein, A. I. et al. (2002). Methods and metrics for cold-start recommendations", u: "https://doi.org/10.1145/564376.564421" }
+    { t: "Schein, A. I. et al. (2002). Methods and metrics for cold-start recommendations", u: "https://doi.org/10.1145/564376.564421" },
+    { t: "Sedhain, S. et al. (2014). Social collaborative filtering for cold-start recommendations. RecSys 2014", u: "https://doi.org/10.1145/2645710.2645772" }
   ] }
 ]);
 
