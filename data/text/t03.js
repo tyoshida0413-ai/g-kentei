@@ -307,12 +307,24 @@ GK.addText([
     { t: "scikit-learn User Guide: Cross-validation", u: "https://scikit-learn.org/stable/modules/cross_validation.html" },
     { t: "scikit-learn User Guide: Metrics and scoring", u: "https://scikit-learn.org/stable/modules/model_evaluation.html" },
     { t: "scikit-learn User Guide: Common pitfalls and recommended practices", u: "https://scikit-learn.org/stable/common_pitfalls.html" },
+    { t: "scikit-learn User Guide: Tuning the decision threshold for class prediction", u: "https://scikit-learn.org/stable/modules/classification_threshold.html" },
+    { t: "scikit-learn User Guide: Decision Trees", u: "https://scikit-learn.org/stable/modules/tree.html" },
+    { t: "scikit-learn Examples: Underfitting vs. Overfitting", u: "https://scikit-learn.org/stable/auto_examples/model_selection/plot_underfitting_overfitting.html" },
+    { t: "scikit-learn Examples: Precision-Recall", u: "https://scikit-learn.org/stable/auto_examples/model_selection/plot_precision_recall.html" },
+    { t: "scikit-learn Examples: Post-tuning the decision threshold for cost-sensitive learning", u: "https://scikit-learn.org/stable/auto_examples/model_selection/plot_cost_sensitive_learning.html" },
     { t: "Goodfellow, Bengio & Courville. Deep Learning, Ch. 5 Machine Learning Basics", u: "https://www.deeplearningbook.org/contents/ml.html" },
+    { t: "Goodfellow, Bengio & Courville. Deep Learning, Ch. 7 Regularization for Deep Learning", u: "https://www.deeplearningbook.org/contents/regularization.html" },
     { t: "Stone, M. (1974). Cross-Validatory Choice and Assessment of Statistical Predictions", u: "https://doi.org/10.1111/j.2517-6161.1974.tb00994.x" },
+    { t: "Arlot, S. & Celisse, A. (2010). A survey of cross-validation procedures for model selection", u: "https://doi.org/10.1214/09-SS054" },
     { t: "Fawcett, T. (2006). An introduction to ROC analysis", u: "https://doi.org/10.1016/j.patrec.2005.10.010" },
+    { t: "Bradley, A. P. (1997). The use of the area under the ROC curve in the evaluation of machine learning algorithms", u: "https://doi.org/10.1016/S0031-3203(96)00142-2" },
     { t: "Banerjee, A. et al. (2009). Hypothesis testing, type I and type II errors", u: "https://doi.org/10.4103/0972-6748.62274" },
+    { t: "Androutsopoulos, I. et al. (2000). An evaluation of Naive Bayesian anti-spam filtering", u: "https://arxiv.org/abs/cs/0006013" },
+    { t: "Hyndman, R. J. & Koehler, A. B. (2006). Another look at measures of forecast accuracy", u: "https://doi.org/10.1016/j.ijforecast.2006.03.001" },
+    { t: "Chai, T. & Draxler, R. R. (2014). Root mean square error (RMSE) or mean absolute error (MAE)? – Arguments against avoiding RMSE in the literature", u: "https://doi.org/10.5194/gmd-7-1247-2014" },
     { t: "Akaike, H. (1974). A new look at the statistical model identification", u: "https://doi.org/10.1109/TAC.1974.1100705" },
     { t: "Schwarz, G. (1978). Estimating the Dimension of a Model", u: "https://doi.org/10.1214/aos/1176344136" },
-    { t: "Stanford Encyclopedia of Philosophy: Simplicity", u: "https://plato.stanford.edu/entries/simplicity/" }
+    { t: "Stanford Encyclopedia of Philosophy: Simplicity", u: "https://plato.stanford.edu/entries/simplicity/" },
+    { t: "Domingos, P. (1999). The Role of Occam's Razor in Knowledge Discovery", u: "https://doi.org/10.1023/A:1009868929893" }
   ] }
 ]);
