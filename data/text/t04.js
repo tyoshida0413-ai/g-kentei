@@ -1,13 +1,13 @@
 /* 大項目04「ディープラーニングの概要」の本文 */
 GK.addText([
 { section: "T11",
-  lead: "<p>ニューラルネットワークは、入力の重み付き和を計算して次へ渡す人工ニューロンを、層状につないだモデルである。隠れ層のない<strong>単純パーセプトロン</strong>から始まり、隠れ層をもつ<strong>多層パーセプトロン</strong>へ発展した。隠れ層を何層も重ねたものを使う機械学習が<strong>ディープラーニング</strong>である。</p><p>この節では、ネットワークの基本構造（入力層・隠れ層・出力層）と、ディープラーニングに必要なデータ量・計算資源、計算を担うハードウェア（CPU・GPU・TPU）の違いを学ぶ。</p>",
+  lead: "<p>ニューラルネットワークは、入力の重み付き和を活性化関数に通して次へ渡す人工ニューロンを、層状につないだモデルである。隠れ層のない<strong>単純パーセプトロン</strong>から始まり、隠れ層をもつ<strong>多層パーセプトロン</strong>へ発展した。隠れ層を何層も重ねたものを使う機械学習が<strong>ディープラーニング</strong>である。</p><p>この節では、ネットワークの基本構造（入力層・隠れ層・出力層）と、ディープラーニングに必要なデータ量・計算資源、計算を担うハードウェア（CPU・GPU・TPU）の違いを学ぶ。</p>",
   items: [
   { g: "simple-perceptron", kw: ["単純パーセプトロン"], title: "単純パーセプトロン",
     body: "<p>入力層と出力層だけからなり、隠れ層をもたないネットワーク。Rosenblatt（1958）のパーセプトロンに由来する。各入力 x に重み w を掛けて足し、バイアス b を加えた値が0を超えれば1、そうでなければ0を出力する（ステップ関数）。</p><div class='formula'>y = 1（w<sub>1</sub>x<sub>1</sub> + w<sub>2</sub>x<sub>2</sub> + b &gt; 0 のとき）、それ以外は y = 0</div><p>判定の境目は w<sub>1</sub>x<sub>1</sub> + w<sub>2</sub>x<sub>2</sub> + b = 0 という直線（一般には超平面）になる。そのため単純パーセプトロンは<strong>線形分離可能</strong>な問題しか解けない。AND や OR は解けるが、XOR（排他的論理和）は1本の直線で分けられないので解けない。この限界は Minsky と Papert（1969）の批判で広く知られ、ニューラルネットワーク研究が一時下火になる一因となった。</p>",
     exam: "「XOR 問題は解けない」「線形分離可能な問題しか解けない」の2点が定番。" },
   { g: "mlp", kw: ["多層パーセプトロン"], title: "多層パーセプトロン（MLP）",
-    body: "<p>入力層と出力層の間に<strong>隠れ層</strong>を1つ以上もち、隠れ層で非線形の活性化関数を使うネットワーク。情報は入力層から出力層へ一方向に流れる（順伝播型）。</p><p>隠れ層が入力を別の表現に変換するので、単純パーセプトロンでは解けない XOR のような線形分離不可能な問題も解ける。さらに、隠れ層のユニットが十分に多ければ、隠れ層1つでも連続関数を望む精度で近似できることが示されている（万能近似定理：Cybenko 1989、Hornik ら 1989）。ただし、これは「表現できる」ことの保証であり、学習でその重みが見つかる保証ではない。</p><p>重みは、誤差逆伝播法（T15）で求めた勾配を使って学習する。Rumelhart・Hinton・Williams の1986年の論文が、この学習法を広めた。なお、隠れ層の活性化関数が線形（恒等関数）だと、何層重ねても1層の線形変換と同じになり、層を重ねる意味がなくなる。</p>",
+    body: "<p>入力層と出力層の間に<strong>隠れ層</strong>を1つ以上もち、隠れ層で非線形の活性化関数を使うネットワーク。情報は入力層から出力層へ一方向に流れる（順伝播型）。</p><p>隠れ層が入力を別の表現に変換するので、単純パーセプトロンでは解けない XOR のような線形分離不可能な問題も解ける。さらに、隠れ層のユニットが十分に多ければ、隠れ層1つでも有界閉集合上の連続関数を望む精度で近似できることが示されている（万能近似定理：Cybenko 1989、Hornik ら 1989）。ただし、これは「表現できる」ことの保証であり、学習でその重みが見つかる保証ではない。</p><p>重みは、誤差逆伝播法（T15）で求めた勾配を使って学習する。Rumelhart・Hinton・Williams の1986年の論文が、この学習法を広めた。なお、隠れ層の活性化関数が線形（恒等関数）だと、何層重ねても1層の線形変換と同じになり、層を重ねる意味がなくなる。</p>",
     exam: "隠れ層と非線形の活性化関数があるから XOR を解ける、という理由づけが問われる。" },
   { g: "hidden-layer", kw: ["隠れ層・入力層・出力層"], title: "入力層・隠れ層・出力層",
     body: "<p>ニューラルネットワークの層は、役割で3種類に分かれる。</p><ul><li><strong>入力層</strong>：データ（画像の画素値、特徴量など）を受け取る最初の層。ふつう入力層そのものは計算をせず、値を次の層へ渡す</li><li><strong>隠れ層（中間層）</strong>：入力層と出力層の間の層。前の層の出力の重み付き和を活性化関数に通し、問題に役立つ特徴を取り出す。訓練データがこの層の出すべき値（正解）を示さないので「隠れ」と呼ぶ（教科書 <em>Deep Learning</em>）</li><li><strong>出力層</strong>：予測結果を出す最後の層。ニューロンの数と活性化関数はタスクで決まる（回帰なら恒等関数、K クラスの分類ならソフトマックス関数で K 個の出力、など。T12）</li></ul><p>隠れ層を2つ以上もつものを深層ニューラルネットワーク（DNN）と呼ぶことが多い（例：Google の機械学習用語集）。</p>",
@@ -18,7 +18,7 @@ GK.addText([
   { g: "cpu", kw: ["CPU"], title: "CPU",
     body: "<p>中央演算処理装置（Central Processing Unit）。コンピュータ全体の制御とあらゆる計算を受け持つ<strong>汎用</strong>の演算装置である。キャッシュ（一時記憶）や制御の仕組みに多くの回路を割き、1つの処理の流れ（スレッド）をできるだけ速く実行するように設計されている。同時に実行できるスレッドは数十程度である。</p><p>分岐の多い複雑な処理を順番にこなすのは得意だが、行列の掛け算のような同じ形の単純な計算を大量にこなすのは GPU ほど得意ではない。ディープラーニングでも、データの読み込み・前処理や全体の制御は CPU が担う。</p>" },
   { g: "gpu", kw: ["GPU"], title: "GPU",
-    body: "<p>Graphics Processing Unit。もとは3次元グラフィックスの描画を速くするための装置で、画素ごとの同じ計算を並列に行うために作られた。単純な演算器を非常に多く備え、数千のスレッドを同時に実行して、全体の処理量（スループット）を高める設計である。1つ1つの処理の速さでは CPU に劣る。</p><p>ニューラルネットワークの計算の大部分は行列演算で、同じ形の計算を大量に並列化できるため、GPU と相性がよい。NVIDIA が2006年に発表した CUDA により、GPU で汎用の計算ができるようになった（GPGPU）。2012年の AlexNet（T26）も GPU 上の効率的な実装で学習された。現在、GPU はディープラーニングの学習・推論に広く使われている。</p>",
+    body: "<p>Graphics Processing Unit。もとは3次元グラフィックスの描画を速くするための装置で、画素ごとの同じ計算を並列に行うために作られた。単純な演算器を非常に多く備え、数千のスレッドを同時に実行して、全体の処理量（スループット）を高める設計である。1つ1つの処理の速さでは CPU に劣る。</p><p>ニューラルネットワークの計算の大部分は行列演算で、同じ形の計算を大量に並列化できるため、GPU と相性がよい。GPU を描画以外の汎用の計算に使うこと（GPGPU）は、CUDA の登場以前からグラフィックス用の仕組みを使って研究されていたが、NVIDIA が2006年に発表した CUDA により、グラフィックス用の API を介さずに GPU で汎用の計算ができるようになった。2012年の AlexNet（T26）も GPU 上の効率的な実装で学習された。現在、GPU はディープラーニングの学習・推論に広く使われている。</p>",
     exam: "「GPU は並列処理が得意なので行列演算の多いディープラーニングに向く」が要点。" },
   { g: "tpu", kw: ["TPU"], title: "TPU",
     body: "<p>Tensor Processing Unit。Google が開発した、機械学習の計算に特化した ASIC（特定用途向け集積回路）である。テンソル（多次元配列）どうしの大規模な行列演算を、積和演算器を格子状に並べた行列演算ユニット（シストリックアレイ）で一気に処理する。</p><p>初代 TPU は<strong>推論専用</strong>で、2015年から Google のデータセンターで使われた。論文（Jouppi ら, 2017）によれば、8ビットの積和演算器を65,536個もつ行列演算ユニットを備え、Google の推論処理では同時期の CPU・GPU より平均15〜30倍速く、電力あたりの性能は30〜80倍高かった。その後の世代は学習にも使われ、Google Cloud でも提供されている。</p><p>汎用性は CPU、GPU、TPU の順に高く、行列演算の速さと電力効率はおおむねその逆になる。用途を絞るほど速く省電力にできる、と理解すればよい。</p>",
@@ -33,14 +33,17 @@ GK.addText([
   ],
   sources: [
     { t: "Rosenblatt, F. (1958). The perceptron: A probabilistic model for information storage and organization in the brain", u: "https://doi.org/10.1037/h0042519" },
+    { t: "Bishop, C. M. (2006). Pattern Recognition and Machine Learning, Section 4.1 Discriminant Functions（4.1.7 The perceptron algorithm）・4.2.1", u: "https://www.microsoft.com/en-us/research/publication/pattern-recognition-machine-learning/" },
     { t: "Rumelhart, Hinton & Williams (1986). Learning representations by back-propagating errors", u: "https://doi.org/10.1038/323533a0" },
     { t: "Goodfellow, Bengio & Courville. Deep Learning（MIT Press, 2016）", u: "https://www.deeplearningbook.org/" },
     { t: "Hornik, Stinchcombe & White (1989). Multilayer feedforward networks are universal approximators", u: "https://doi.org/10.1016/0893-6080(89)90020-8" },
     { t: "Cybenko, G. (1989). Approximation by superpositions of a sigmoidal function", u: "https://doi.org/10.1007/BF02551274" },
     { t: "NVIDIA. CUDA Programming Guide, 1.1 Introduction", u: "https://docs.nvidia.com/cuda/cuda-programming-guide/01-introduction/introduction.html" },
+    { t: "Owens, J. D. et al. (2005). A Survey of General-Purpose Computation on Graphics Hardware（Eurographics 2005 STAR）", u: "https://research.nvidia.com/publication/2005-08_survey-general-purpose-computation-graphics-hardware" },
     { t: "Krizhevsky, Sutskever & Hinton (2012). ImageNet Classification with Deep Convolutional Neural Networks", u: "https://proceedings.neurips.cc/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html" },
     { t: "Jouppi, N. P. et al. (2017). In-Datacenter Performance Analysis of a Tensor Processing Unit", u: "https://arxiv.org/abs/1704.04760" },
     { t: "Google Cloud. Introduction to Cloud TPU", u: "https://docs.cloud.google.com/tpu/docs/intro-to-tpu" },
+    { t: "Google Cloud. TPU architecture（How do TPUs work?）", u: "https://docs.cloud.google.com/tpu/docs/system-architecture-tpu-vm" },
     { t: "Google Machine Learning Glossary", u: "https://developers.google.com/machine-learning/glossary" }
   ] },
 { section: "T12",
