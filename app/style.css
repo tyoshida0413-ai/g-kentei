@@ -285,6 +285,15 @@ a { color: var(--ai); }
 .btn:disabled { opacity: .45; cursor: default; }
 .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
 .note { color: var(--ink-3); font-size: 13.5px; }
+.data-h { font-size: 16px; margin: 26px 0 6px; }
+.sync-status { font-size: 14px; margin: 6px 0; color: var(--ink-2); }
+.sync-status.ok { color: var(--ok); }
+.sync-status.error { color: var(--ng); }
+.sync-token { flex: 1 1 260px; min-width: 0; padding: 7px 10px; font: 13.5px var(--mono); border: 1px solid var(--rule-strong); border-radius: 4px; background: var(--paper-raise); color: var(--ink); }
+.sync-help { font-size: 13.5px; color: var(--ink-2); margin: 4px 0 10px; }
+.sync-help summary { cursor: pointer; }
+.sync-help ol { padding-left: 1.4em; margin: 8px 0; }
+.sync-help li { margin: 3px 0; }
 
 /* 用語索引 */
 .idx-search { width: 100%; max-width: 420px; padding: 8px 12px; border: 1px solid var(--rule-strong); border-radius: 6px; font: inherit; background: var(--paper-raise); }

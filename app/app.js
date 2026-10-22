@@ -452,7 +452,7 @@
     const st = store.state;
     const answered = Object.keys(st.ans).length;
     const okN = Object.values(st.ans).filter(a => a.ok).length;
-    root.appendChild(h("p", "page-sub", "栞・読了・解答の結果は、このブラウザの中に保存されています。ブラウザを変えると引き継がれず、ブラウザのデータを消すと消えます。ときどき書き出してバックアップしてください。"));
+    root.appendChild(h("p", "page-sub", "栞・読了・解答の結果は、このブラウザの中に保存されています。下の「端末間の共有」を設定すると、GitHub を通して Mac と iPad で同じ記録を使えます。設定しない場合、ブラウザを変えると引き継がれず、ブラウザのデータを消すと消えます。"));
     if (!store.available) root.appendChild(h("p", "note", "このブラウザでは記録を保存できない設定になっています。画面を閉じると記録は消えます。"));
     const tb = h("table", "score-table");
     tb.innerHTML = "<tr><td>読了した節</td><td class='num'>" + Object.keys(st.read).length + " ／ " + SY.sections.length + "</td></tr>"
@@ -462,6 +462,8 @@
       + "<tr><td>覚えた用語（フラッシュカード）</td><td class='num'>" + Object.keys(st.known || {}).length + " ／ " + GK.glossary.length + "</td></tr>";
     root.appendChild(tb);
     const row = h("div", "btn-row");
+    renderSync(root);
+    root.appendChild(h("h2", "data-h", "バックアップ"));
     const ex = h("button", "btn primary", "記録を書き出す（JSON）");
     ex.type = "button";
     ex.addEventListener("click", () => store.exportJSON());
@@ -478,7 +480,7 @@
       const r = new FileReader();
       r.onload = () => {
         try {
-          if (!confirm("今の記録を、読み込んだファイルの内容で置き換えます。よろしいですか？")) return;
+          if (!confirm("読み込んだファイルの記録を、今の記録に統合します（どちらかで付けた印は残ります）。よろしいですか？")) return;
           store.importJSON(r.result);
           afterImport();
           toast("記録を読み込みました");
@@ -490,7 +492,7 @@
     const rs = h("button", "btn", "記録をすべて消す");
     rs.type = "button";
     rs.addEventListener("click", () => {
-      if (!confirm("栞・読了・解答・覚えた用語の記録をすべて消します。元に戻せません。よろしいですか？")) return;
+      if (!confirm("栞・読了・解答・覚えた用語の記録をすべて消します。" + (GK.sync.on ? "共有している他の端末の記録も消えます。" : "") + "元に戻せません。よろしいですか？")) return;
       store.reset();
       afterImport();
       renderData(root);
@@ -499,6 +501,64 @@
     root.appendChild(row);
     root.appendChild(h("p", "note", "出題範囲：" + SY.source + "（" + SY.revised + " 改訂、" + SY.applies + "）"));
   }
+  /* 端末間の共有の設定（設計書 §4.5.1） */
+  function renderSync(root) {
+    const sync = GK.sync;
+    root.appendChild(h("h2", "data-h", "端末間の共有（GitHub）"));
+    const line = h("p", "sync-status");
+    root.appendChild(line);
+    const show = st => {
+      if (!line.isConnected && root.contains(line) === false) return;
+      const at = st.at ? new Date(st.at).toLocaleString("ja-JP", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "";
+      const text = { off: "未設定です（この端末だけに保存しています）",
+        idle: "設定済みです", busy: "同期しています…",
+        ok: "同期しました（" + at + "）",
+        offline: st.msg, error: "同期できません：" + st.msg }[st.kind] || "";
+      line.textContent = text;
+      line.className = "sync-status " + st.kind;
+    };
+    show(sync.status);
+    sync.onStatus(show);
+    const row = h("div", "btn-row");
+    if (sync.on) {
+      const now = h("button", "btn primary", "今すぐ同期");
+      now.type = "button";
+      now.addEventListener("click", () => sync.now());
+      const off = h("button", "btn", "この端末の共有をやめる");
+      off.type = "button";
+      off.addEventListener("click", () => {
+        if (!confirm("この端末に保存したトークンを消し、共有をやめます。記録はこの端末に残ります。よろしいですか？")) return;
+        sync.setToken("");
+        renderData(root);
+      });
+      row.append(now, off);
+      root.appendChild(row);
+      return;
+    }
+    const inp = h("input", "sync-token");
+    inp.type = "password";
+    inp.autocomplete = "off";
+    inp.placeholder = "github_pat_…";
+    const ok = h("button", "btn primary", "トークンを保存して同期");
+    ok.type = "button";
+    ok.addEventListener("click", () => {
+      if (!inp.value.trim()) { inp.focus(); return; }
+      sync.setToken(inp.value);
+      renderData(root);
+    });
+    row.append(inp, ok);
+    root.appendChild(row);
+    const help = h("details", "sync-help");
+    help.innerHTML = "<summary>トークンの作り方</summary><ol>"
+      + "<li>GitHub の Settings → Developer settings → Personal access tokens → <b>Fine-grained tokens</b> → Generate new token</li>"
+      + "<li>Expiration（有効期限）を選ぶ（例：90 days）</li>"
+      + "<li>Repository access で <b>Only select repositories</b> を選び、<b>" + sync.repo + "</b> だけを選ぶ</li>"
+      + "<li>Permissions の Repository permissions で <b>Contents</b> を <b>Read and write</b> にする（ほかは触らない）</li>"
+      + "<li>作ったトークンをこの欄に貼り付ける。Mac と iPad のそれぞれで1回ずつ行う</li></ol>"
+      + "<p>トークンはこのブラウザの中だけに保存し、GitHub 以外には送りません。期限が切れたら作り直して入れ直してください。</p>";
+    root.appendChild(help);
+  }
+
   function afterImport() {
     renderTOC();
     renderText();
@@ -583,4 +643,19 @@
   }
   if (!location.hash) setCurrent(SY.sections[0].id);
   if (!store.available) toast("このブラウザでは記録を保存できません（栞・読了は画面を閉じると消えます）");
+
+  /* 別の端末の記録を取り込んだら、表示中の印を更新する（本文は組み立て直さない） */
+  GK.sync.onMerged(() => {
+    refreshRead();
+    markBookmarks();
+    renderBmPanel();
+    $("#btn-resume").disabled = !store.state.lastPos;
+    if (currentView === "data") route();
+  });
+  let syncErr = "";
+  GK.sync.onStatus(st => {
+    if (st.kind === "error" && st.msg !== syncErr) toast("記録の同期：" + st.msg);
+    syncErr = st.kind === "error" ? st.msg : "";
+  });
+  GK.sync.start();
 })();
