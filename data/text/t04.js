@@ -266,8 +266,8 @@ GK.addText([
     body: "<p>勾配降下法に「慣性」を加えた手法（Polyak, 1964）。坂を転がるボールのように、過去の更新の勢い（速度 v）を残しながら進む。</p><div class='formula'>v ← αv − η × ∂E/∂w、　w ← w + v　（α は 0.9 などの係数）</div><p>同じ向きの勾配が続く方向には速度がたまって加速し、勾配の向きが行ったり来たりする方向では打ち消し合って振動が抑えられる。細長い谷のような地形で、勾配降下法がジグザグに進んで遅くなるのを改善する。</p><p>改良版の <strong>Nesterov の加速勾配法</strong>は、今の速度で少し進んだ先の位置で勾配を計算してから更新するため、行き過ぎを抑えやすい（Sutskever ら, 2013 が深層学習に導入）。</p>",
     exam: "「過去の勾配（更新量）を使って振動を抑え、加速する」が要点。" },
   { g: "adagrad", kw: ["AdaGrad"], title: "AdaGrad",
-    body: "<p>パラメータごとに学習率を自動で調整する手法（Duchi ら, 2011）。各パラメータについて、これまでの勾配の二乗を<strong>すべて足し合わせた値</strong> h をためておき、その平方根で学習率を割る。</p><div class='formula'>h ← h + (∂E/∂w)<sup>2</sup>、　w ← w − (η / √h) × ∂E/∂w</div><p>大きく動いた（勾配が大きかった）パラメータほど学習率が小さくなり、あまり動いていないパラメータは比較的大きな学習率で更新される。まれにしか現れない特徴をもつデータ（スパースな勾配）に強い。</p><p>欠点は、h が増え続けるため、学習が進むと学習率が0に近づき、<strong>更新がほとんど止まってしまう</strong>こと。これを改善したのが RMSprop と AdaDelta である。</p>",
-    exam: "「勾配の二乗の合計で割る」ため学習率が単調に小さくなる、という欠点が問われる。" },
+    body: "<p>パラメータごとに学習率を自動で調整する手法（Duchi ら, 2011）。各パラメータについて、これまでの勾配の二乗を<strong>すべて足し合わせた値</strong> h をためておき、その平方根で学習率を割る。</p><div class='formula'>h ← h + (∂E/∂w)<sup>2</sup>、　w ← w − (η / √h) × ∂E/∂w</div><p>これまでの勾配が大きかったパラメータほど学習率が小さくなり、勾配が小さかったパラメータは比較的大きな学習率で更新される。まれにしか現れない特徴をもつデータ（スパースな勾配）に強い。</p><p>欠点は、h が増え続けるため、学習が進むと学習率が0に近づき、<strong>更新がほとんど止まってしまう</strong>こと。これを改善したのが RMSprop と AdaDelta である。</p>",
+    exam: "「勾配の二乗の合計の平方根で割る」ため学習率が単調に小さくなる、という欠点が問われる。" },
   { g: "rmsprop", kw: ["RMSprop"], title: "RMSprop",
     body: "<p>AdaGrad の「学習率が0に近づいて更新が止まる」問題を改善した手法。Hinton がオンライン講義（2012）で示したもので、論文ではなく講義資料が出典である。講義では、勾配の符号だけを使う rprop をミニバッチ学習で使えるようにした方法として説明されており、AdaGrad の改良版という位置づけは教科書 <em>Deep Learning</em> による。</p><p>勾配の二乗を全部足す代わりに、<strong>指数移動平均</strong>（古い値ほど影響が小さくなる平均）をとる。</p><div class='formula'>h ← ρh + (1 − ρ)(∂E/∂w)<sup>2</sup>、　w ← w − (η / √h) × ∂E/∂w</div><p>昔の大きな勾配の影響はしだいに薄れるので、学習率が際限なく小さくなることはなく、直近の勾配の大きさに合わせて学習率を調整し続けられる。</p>",
     exam: "AdaGrad との違い（合計ではなく指数移動平均）が問われる。" },
@@ -283,7 +283,7 @@ GK.addText([
   { g: "amsbound", kw: ["AMSBound"], title: "AMSBound",
     body: "<p>AdaBound と同じ論文（Luo ら, 2019）で提案された手法で、学習率の動的な上限・下限を <strong>AMSGrad</strong> に当てはめたものである。</p><p>AMSGrad（Reddi ら, 2018）は、Adam が単純な問題でも最適解に収束しない場合があることを示し、勾配の二乗の移動平均として<strong>過去の最大値</strong>を使い続けることで、学習率が不安定に大きくなるのを防いだ Adam の改良版である。まとめると、AdaBound＝Adam＋学習率の範囲制限、AMSBound＝AMSGrad＋学習率の範囲制限、となる。</p>" },
   { g: "early-stopping", kw: ["早期終了"], title: "早期終了",
-    body: "<p>学習を続けると、訓練データの誤差は下がり続けても、検証データの誤差はある時点から上がり始める（過学習）。早期終了は、検証データの誤差を一定の間隔で確かめ、<strong>改善しなくなった時点で学習を打ち切り</strong>、検証誤差が最も小さかったときの重みを使う方法である。少しの悪化ですぐ止めないよう、決めた回数（patience）続けて改善しなければ止める、とするのがふつうである。</p><p>学習の手順や誤差関数をほとんど変えずに使え、余計な学習をしないので計算時間も減らせる。重みが初期値の近くにとどまるため正則化として働き、単純な線形モデルでは L2 正則化と同等であることが示されている。</p>",
+    body: "<p>学習を続けると、訓練データの誤差は下がり続けても、検証データの誤差はある時点から上がり始める（過学習）。早期終了は、検証データの誤差を一定の間隔で確かめ、<strong>改善しなくなった時点で学習を打ち切り</strong>、検証誤差が最も小さかったときの重みを使う方法である。少しの悪化ですぐ止めないよう、決めた回数（patience）続けて改善しなければ止める、とするのがふつうである。</p><p>学習の手順や誤差関数をほとんど変えずに使え、余計な学習をしないので計算時間も減らせる。重みが初期値の近くにとどまるため正則化として働き、二乗誤差の単純な線形モデルを勾配降下法で学習する場合には、L2 正則化と同等とみなせることが示されている。</p>",
     exam: "「検証データの誤差が上がり始めたら止める」「正則化の一種」の2点が問われる。" },
   { g: "hyperparameter", kw: ["ハイパーパラメータ"], title: "ハイパーパラメータ",
     body: "<p>学習によって自動では決まらず、学習の前に決めておく値。例：学習率、バッチサイズ、エポック数、層の数やニューロンの数、活性化関数や最適化手法の種類、正則化の強さ λ、ドロップアウトの割合。</p><p>これに対し、重みやバイアスのように学習で決まる値を<strong>パラメータ</strong>と呼んで区別する。ハイパーパラメータの良し悪しは、訓練データではなく<strong>検証データ</strong>での性能で判断する。テストデータで選ぶと、テストデータに合わせ込むことになり、最終的な性能を正しく評価できなくなる。主な調整方法に、手作業、グリッドサーチ、ランダムサーチ、ベイズ最適化がある。</p>",
@@ -291,7 +291,7 @@ GK.addText([
   { g: "grid-search", kw: ["グリッドサーチ"], title: "グリッドサーチ",
     body: "<p>ハイパーパラメータごとに候補の値を決め、<strong>すべての組み合わせ</strong>を試して、検証データでの性能が最も良いものを選ぶ方法。例：学習率を {0.1, 0.01, 0.001}、バッチサイズを {32, 64, 128} とすると、3 × 3 = 9 通りを試す。</p><p>網羅的で分かりやすく、並列に実行しやすい。しかし、ハイパーパラメータの数が増えると組み合わせの数が掛け算で増える（4種類を5通りずつなら 5<sup>4</sup> = 625 通り）。また、性能にほとんど効かないハイパーパラメータにも同じだけ試行を割いてしまう。</p>" },
   { g: "random-search", kw: ["ランダムサーチ"], title: "ランダムサーチ",
-    body: "<p>ハイパーパラメータの値を、決めた範囲（分布）から<strong>無作為に選んで</strong>試す方法。試す回数は予算に合わせて自由に決められる。</p><p>Bergstra と Bengio（2012）は、多くの問題では性能に大きく効くハイパーパラメータは少数であり、ランダムサーチはその重要な軸について多くの異なる値を試せるため、同じ試行回数でもグリッドサーチより効率よく良い設定を見つけやすいことを示した。グリッドサーチでは、重要な軸でも候補の数しか値を試せない。</p><p>さらに効率を上げる方法に、それまでの試行結果から性能を予測するモデルを作り、次に試す値を選んでいく<strong>ベイズ最適化</strong>（Snoek ら, 2012）がある。</p>",
+    body: "<p>ハイパーパラメータの値を、決めた範囲（分布）から<strong>無作為に選んで</strong>試す方法。試す回数は予算に合わせて自由に決められる。</p><p>Bergstra と Bengio（2012）は、多くの問題では性能に大きく効くハイパーパラメータは少数であり、ランダムサーチはその重要な軸について多くの異なる値を試せるため、同じ試行回数でもグリッドサーチより効率よく良い設定を見つけやすいことを示した。グリッドサーチでは、重要な軸でも候補の数しか値を試せない。</p><p>さらに効率を上げる方法に、それまでの試行結果から性能を予測するモデルを作り、次に試す値を選んでいく<strong>ベイズ最適化</strong>がある（機械学習のハイパーパラメータ調整に使った例：Snoek ら, 2012）。</p>",
     exam: "グリッドサーチとの違いと、ランダムサーチのほうが効率的になりやすい理由が問われる。" },
   { g: "double-descent", kw: ["二重降下現象"], title: "二重降下現象",
     body: "<p>従来の考え方（バイアスとバリアンスのトレードオフ）では、モデルを複雑にするとテスト誤差は U 字形を描き、ある程度以上複雑にすると過学習で悪化し続けるとされてきた。</p><p>ところが、ニューラルネットワークなどでモデルをさらに大きくしていくと、テスト誤差はいったん上がったあと、モデルが訓練データに完全に当てはまる規模（補間のしきい値）を超えたあたりから<strong>再び下がる</strong>。誤差の曲線が2回下がるので二重降下と呼ぶ（Belkin ら, 2019）。Nakkiran ら（2019）は、深層学習でこの現象がモデルの大きさだけでなく<strong>エポック数</strong>についても起こること、条件によっては訓練データを増やすとかえって性能が下がる場合があることを示した。</p>",
@@ -302,12 +302,12 @@ GK.addText([
   ],
   pitfalls: [
     "「バッチサイズ」はふつうミニバッチの大きさを指す。バッチ学習の「バッチ」（訓練データ全体）と混同しない。",
-    "エポックはデータ全体を1回使う単位、イテレーションは重みを1回更新する単位。1エポック＝データ数÷バッチサイズ回のイテレーション。",
+    "エポックはデータ全体を1回使う単位、イテレーションは重みを1回更新する単位。1エポック＝データ数÷バッチサイズ回のイテレーション（割り切れないときは、ふつう切り上げた回数）。",
     "AdaGrad は勾配の二乗の「合計」、RMSprop・AdaDelta は「移動平均」を使う。AdaGrad は学習率が0に近づいて更新が止まりやすい。",
     "Adam は「勾配の移動平均（モーメンタムに似る）＋勾配の二乗の移動平均（RMSprop に似る）」。AdaBound は Adam、AMSBound は AMSGrad に学習率の上限・下限を付けたもの。",
     "鞍点は勾配が0でも極小ではない。高次元では局所最適解より鞍点が問題になりやすいとされる。",
     "ハイパーパラメータは検証データで選ぶ。重み・バイアスは学習で決まるパラメータで、ハイパーパラメータではない。",
-    "早期終了は学習を途中で打ち切る正則化であり、「学習を速くする最適化手法」ではない。"
+    "早期終了は学習を途中で打ち切る正則化であり、モーメンタムや Adam のような「重みの更新のしかたを変えて収束を速める最適化手法」ではない（ただし、打ち切る分だけ計算時間は減る）。"
   ],
   sources: [
     { t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 8 Optimization for Training Deep Models", u: "https://www.deeplearningbook.org/contents/optimization.html" },
@@ -331,6 +331,17 @@ GK.addText([
     { t: "Nakkiran et al. (2019). Deep Double Descent: Where Bigger Models and More Data Hurt", u: "https://arxiv.org/abs/1912.02292" },
     { t: "Wolpert, D. H. & Macready, W. G. (1997). No free lunch theorems for optimization", u: "https://doi.org/10.1109/4235.585893" },
     { t: "Wolpert, D. H. (1996). The Lack of A Priori Distinctions Between Learning Algorithms", u: "https://doi.org/10.1162/neco.1996.8.7.1341" },
-    { t: "Google Machine Learning Glossary", u: "https://developers.google.com/machine-learning/glossary" }
+    { t: "Google Machine Learning Glossary", u: "https://developers.google.com/machine-learning/glossary" },
+    { t: "Snoek, Larochelle & Adams (2012). Practical Bayesian Optimization of Machine Learning Algorithms", u: "https://arxiv.org/abs/1206.2944" },
+    { t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 4（4.3 Gradient-Based Optimization）", u: "https://www.deeplearningbook.org/contents/numerical.html" },
+    { t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 5（5.2.1 The No Free Lunch Theorem・5.3 Hyperparameters and Validation Sets）", u: "https://www.deeplearningbook.org/contents/ml.html" },
+    { t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 6（6.2 Gradient-Based Learning・6.5 Back-Propagation and Other Differentiation Algorithms）", u: "https://www.deeplearningbook.org/contents/mlp.html" },
+    { t: "Sutskever, Martens, Dahl & Hinton (2013). On the importance of initialization and momentum in deep learning", u: "https://proceedings.mlr.press/v28/sutskever13.html" },
+    { t: "Bishop, C. M. (2006). Pattern Recognition and Machine Learning, Section 5.2.4 Gradient descent optimization", u: "https://www.microsoft.com/en-us/research/publication/pattern-recognition-machine-learning/" },
+    { t: "Bottou, Curtis & Nocedal (2018). Optimization Methods for Large-Scale Machine Learning", u: "https://arxiv.org/abs/1606.04838" },
+    { t: "Google Machine Learning Crash Course: Linear regression: Gradient descent", u: "https://developers.google.com/machine-learning/crash-course/linear-regression/gradient-descent" },
+    { t: "Google Machine Learning Crash Course: Linear regression: Hyperparameters", u: "https://developers.google.com/machine-learning/crash-course/linear-regression/hyperparameters" },
+    { t: "Liu et al. (2022). Monolith: Real Time Recommendation System With Collisionless Embedding Table", u: "https://arxiv.org/abs/2209.07663" },
+    { t: "PyTorch documentation: torch.utils.data（DataLoader の drop_last）", u: "https://docs.pytorch.org/docs/stable/data.html" }
   ] }
 ]);
