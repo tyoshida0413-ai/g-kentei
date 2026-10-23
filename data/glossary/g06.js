@@ -705,7 +705,7 @@ GK.addGlossary([
   short: "人手で付けた正解の代わりに機械的に作り、学習に使う仮のラベル。半教師あり学習ではラベルなしデータに対するモデル自身の確信度の高い予測を、自己教師あり学習ではデータから自動的に作った正解を指す。",
   src: [{ t: "Sohn et al. (2020). FixMatch: Simplifying Semi-Supervised Learning with Consistency and Confidence", u: "https://arxiv.org/abs/2001.07685" }, { t: "Jing, L. & Tian, Y. (2019). Self-supervised Visual Feature Learning with Deep Neural Networks: A Survey", u: "https://arxiv.org/abs/1902.06162" }] },
 { id: "contrastive-learning", term: "対照学習", reading: "たいしょうがくしゅう", aliases: ["Contrastive Learning", "コントラスティブ学習"], kw: [], home: "T31",
-  short: "似たもの（同じ画像を別々に加工したものなど）の表現は近づけ、異なるものの表現は遠ざけるように学習する方法。ラベルなしで使える自己教師あり学習の代表例で、SimCLR や CLIP が用いる。",
+  short: "似たもの（同じ画像を別々に加工したものなど）の表現は近づけ、異なるものの表現は遠ざけるように学習する方法。ラベルなしで使える自己教師あり学習の代表例（SimCLR など）で、画像と説明文の組から学ぶ CLIP も用いる。",
   src: [{ t: "Chen et al. (2020). A Simple Framework for Contrastive Learning of Visual Representations", u: "https://arxiv.org/abs/2002.05709" }, { t: "Radford et al. (2021). Learning Transferable Visual Models From Natural Language Supervision", u: "https://arxiv.org/abs/2103.00020" }] },
 { id: "continual-learning", term: "継続学習", reading: "けいぞくがくしゅう", aliases: ["Continual Learning", "連続学習"], kw: [], home: "T31",
   short: "複数のタスクを順番に学習していき、新しいことを学んでも以前に学んだことを保ち続けることを目指す学習の枠組み。破滅的忘却をどう防ぐかが主な課題になる。",
