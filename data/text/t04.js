@@ -98,16 +98,16 @@ GK.addText([
     { t: "He, Zhang, Ren & Sun (2016). Identity Mappings in Deep Residual Networks", u: "https://arxiv.org/abs/1603.05027" }
   ] },
 { section: "T13",
-  lead: "<p>誤差関数（損失関数）は、モデルの予測が正解からどれだけずれているかを1つの数値で表す関数である。ニューラルネットワークの学習とは、この値が小さくなるように重みを調整することにほかならない。</p><p>この節では、回帰で使う<strong>平均二乗誤差関数</strong>、分類で使う<strong>交差エントロピー</strong>、確率分布の違いを測る<strong>カルバック・ライブラー情報量</strong>、データどうしの距離を学習する <strong>Contrastive Loss</strong> と <strong>Triplet Loss</strong> を学ぶ。タスクに合った誤差関数を選べることが目標である。</p>",
+  lead: "<p>誤差関数（損失関数）は、モデルの予測が正解からどれだけずれているかを1つの数値で表す関数である。ニューラルネットワークの学習では、この値が小さくなるように重みを調整する。</p><p>この節では、回帰で使う<strong>平均二乗誤差関数</strong>、分類で使う<strong>交差エントロピー</strong>、確率分布の違いを測る<strong>カルバック・ライブラー情報量</strong>、データどうしの距離を学習する <strong>Contrastive Loss</strong> と <strong>Triplet Loss</strong> を学ぶ。タスクに合った誤差関数を選べることが目標である。</p>",
   items: [
   { g: "loss-function", kw: [], title: "誤差関数の役割と選び方",
-    body: "<p>誤差関数は、予測と正解のずれを数値にしたもので、学習はその値を最小にする重みを探す最適化問題になる（T16）。誤差関数の勾配を誤差逆伝播法（T15）で計算し、勾配降下法で重みを更新する。</p><p>どの誤差関数を使うかはタスクで決まる。多くの場合、モデルの出力を確率分布とみなし、訓練データのもっともらしさ（尤度）を最大にする最尤推定（T37 の最尤法）から誤差関数が導かれる。たとえば、出力に正規分布の誤差を仮定すると平均二乗誤差、カテゴリの分布を仮定すると交差エントロピーになる。</p><ul><li>回帰：平均二乗誤差関数（出力層は恒等関数）</li><li>分類：交差エントロピー（出力層はシグモイド関数・ソフトマックス関数）</li><li>似ているかどうかの距離を学ぶ（距離学習）：Contrastive Loss、Triplet Loss</li></ul><p>過学習を抑えるため、誤差関数に重みの大きさへの罰則（正則化項、T14）を足して全体を最小にすることも多い。</p>",
+    body: "<p>誤差関数は、予測と正解のずれを数値にしたもので、学習はその値を最小にする重みを探す最適化問題になる（T16）。誤差関数の勾配を誤差逆伝播法（T15）で計算し、勾配降下法で重みを更新する。</p><p>どの誤差関数を使うかはタスクで決まる。多くの場合、モデルの出力を確率分布とみなし、訓練データのもっともらしさ（尤度）を最大にする最尤推定（T37 の最尤法）から誤差関数が導かれる。たとえば、出力に分散一定の正規分布の誤差を仮定すると平均二乗誤差、カテゴリの分布を仮定すると交差エントロピーになる。</p><ul><li>回帰：平均二乗誤差関数（出力層は恒等関数）</li><li>分類：交差エントロピー（出力層はシグモイド関数・ソフトマックス関数）</li><li>似ているかどうかの距離を学ぶ（距離学習）：Contrastive Loss、Triplet Loss</li></ul><p>過学習を抑えるため、誤差関数に重みの大きさへの罰則（正則化項、T14）を足して全体を最小にすることも多い。</p>",
     exam: "タスクと誤差関数の対応（回帰＝平均二乗誤差、分類＝交差エントロピー）が問われる。" },
   { g: "mse-loss", kw: ["平均二乗誤差関数"], title: "平均二乗誤差関数",
-    body: "<p>予測値 ŷ と正解値 y の差の二乗を、N 件のデータで平均した誤差関数。</p><div class='formula'>E = (1/N) Σ (y<sub>i</sub> − ŷ<sub>i</sub>)<sup>2</sup></div><p>微分したときの係数をきれいにするため、1/2 を掛けた形で書くこともある。主に<strong>回帰問題</strong>で使い、出力層の恒等関数と組み合わせる。正解のまわりに正規分布の誤差があると仮定した最尤推定と同じ答えになる。</p><p>差を二乗するので、大きく外れたデータ（外れ値）の影響を強く受ける。また、シグモイド関数のように飽和する出力と組み合わせると、勾配が非常に小さくなり学習が進みにくいことがある。分類で交差エントロピーが好まれる理由の1つである。</p><p>なお、T10 で学ぶ評価指標の「平均二乗誤差（MSE）」と計算式は同じだが、こちらは学習で最小にする対象（誤差関数）としての呼び名である。</p>",
+    body: "<p>予測値 ŷ と正解値 y の差の二乗を、N 件のデータで平均した誤差関数。</p><div class='formula'>E = (1/N) Σ (y<sub>i</sub> − ŷ<sub>i</sub>)<sup>2</sup></div><p>微分したときの係数をきれいにするため、1/2 を掛けた形で書くこともある。主に<strong>回帰問題</strong>で使い、出力層の恒等関数と組み合わせる。誤差（正解値と予測値の差）が平均0・分散一定の正規分布に従うと仮定した最尤推定と、同じ答え（重み）になる。</p><p>差を二乗するので、大きく外れたデータ（外れ値）の影響を強く受ける。また、シグモイド関数のように飽和する出力と組み合わせると、勾配が非常に小さくなり学習が進みにくいことがある。分類で交差エントロピーが好まれる理由の1つである。</p><p>なお、T10 で学ぶ評価指標の「平均二乗誤差（MSE）」と計算式は同じだが、こちらは学習で最小にする対象（誤差関数）としての呼び名である。</p>",
     exam: "回帰で使うことと、外れ値に敏感なことが問われる。" },
   { g: "cross-entropy", kw: ["交差エントロピー"], title: "交差エントロピー",
-    body: "<p>正解の確率分布 t と、モデルが予測した確率分布 y のずれを表す量。分類問題の代表的な誤差関数である。</p><div class='formula'>E = −Σ<sub>k</sub> t<sub>k</sub> log y<sub>k</sub></div><p>正解が1つのクラスだけ1で他が0の形（ワンホット表現）なら、和の中で残るのは正解クラスの項だけで、<strong>E = −log（正解クラスの予測確率）</strong>になる。正解クラスの確率が1に近いほど0に近づき、0に近いほど急に大きくなる。たとえば正解クラスの予測確率が 0.8 なら E ≈ 0.22、0.1 なら E ≈ 2.30 である（自然対数）。二値分類では E = −{t log y + (1 − t) log(1 − y)} の形を使う。</p><p>多クラス分類ではソフトマックス関数、二値分類ではシグモイド関数の出力と組み合わせる。これらの関数がもつ指数関数を対数が打ち消すため、出力が飽和しても勾配が小さくなりにくい。交差エントロピーを最小にすることは、最尤推定を行うことと同じである。</p>",
+    body: "<p>正解の確率分布 t と、モデルが予測した確率分布 y のずれを表す量。分類問題の代表的な誤差関数である。</p><div class='formula'>E = −Σ<sub>k</sub> t<sub>k</sub> log y<sub>k</sub></div><p>正解が1つのクラスだけ1で他が0の形（ワンホット表現）なら、和の中で残るのは正解クラスの項だけで、<strong>E = −log（正解クラスの予測確率）</strong>になる。正解クラスの確率が1に近いほど0に近づき、0に近いほど急に大きくなる。たとえば正解クラスの予測確率が 0.8 なら E ≈ 0.22、0.1 なら E ≈ 2.30 である（自然対数）。二値分類では E = −{t log y + (1 − t) log(1 − y)} の形を使う。</p><p>多クラス分類ではソフトマックス関数、二値分類ではシグモイド関数の出力と組み合わせる。これらの関数がもつ指数関数を対数が打ち消すため、予測が誤ったまま出力が飽和しても勾配が小さくなりにくい（勾配が小さくなるのは、ほぼ正解しているときだけである）。交差エントロピーを最小にすることは、最尤推定を行うことと同じである。</p>",
     exam: "分類で使うこと、ソフトマックス関数との組み合わせ、−log p の計算が問われる。" },
   { g: "kl-divergence", kw: ["カルバック・ライブラー情報量 (KL)"], title: "カルバック・ライブラー情報量（KL）",
     body: "<p>2つの確率分布 P と Q がどれだけ違うかを表す量で、KL ダイバージェンスとも呼ぶ。Kullback と Leibler（1951）が導入した。</p><div class='formula'>D<sub>KL</sub>(P‖Q) = Σ P(x) log(P(x) / Q(x))</div><p>主な性質は次の3つ。</p><ul><li>常に0以上で、P と Q が一致するときだけ0になる</li><li>P と Q を入れ替えると値が変わる（D<sub>KL</sub>(P‖Q) ≠ D<sub>KL</sub>(Q‖P) となる場合がある）。このため厳密な意味の距離ではない</li><li>交差エントロピーとの関係：H(P, Q) = H(P) + D<sub>KL</sub>(P‖Q)。H(P)（正解の分布のエントロピー）はモデルに関係しないので、交差エントロピーを最小にすることは KL 情報量を最小にすることと同じになる</li></ul><p>変分オートエンコーダ（VAE、T24）では、潜在変数の分布をあらかじめ決めた分布に近づける項として KL 情報量が誤差に含まれる。</p>",
@@ -116,7 +116,7 @@ GK.addText([
     body: "<p>2つのデータの組（ペア）を入力とし、ペアが似ているかどうかのラベルを使って、データを埋め込む空間（ベクトル表現）を学習する誤差関数。距離学習の基本的な方法である（Hadsell ら, 2006）。</p><ul><li>似ているペア：2つの埋め込みの距離 D の二乗を損失にし、近づける</li><li>似ていないペア：距離があらかじめ決めた幅（マージン）m より小さいときだけ、(m − D) の二乗を損失にして遠ざける。m 以上離れていれば損失は0</li></ul><p>似ていないペアの項がないと、すべての入力を同じ点に写せば損失が0になってしまう（つぶれた解）。マージンを設けた反発の項がこれを防ぐ。重みを共有する2つのネットワーク（Siamese Network）でペアをそれぞれ変換して学習するのが典型で、顔の照合（Chopra ら, 2005）などに使われた。</p>",
     exam: "ペア（2つ組）を使う、似たものは近く・似ていないものはマージン以上遠く、が要点。" },
   { g: "triplet-loss", kw: ["Triplet Loss"], title: "Triplet Loss",
-    body: "<p>基準となるデータ（アンカー a）、それと同じ種類のデータ（ポジティブ p）、異なる種類のデータ（ネガティブ n）の<strong>3つ組</strong>を使う距離学習の誤差関数。顔認識の FaceNet（Schroff ら, 2015）で用いられて広く知られた。</p><div class='formula'>L = max(0, d(a, p) − d(a, n) + α)</div><p>d は埋め込みどうしの距離（FaceNet ではユークリッド距離の二乗）、α はマージンである。アンカーとネガティブの距離が、アンカーとポジティブの距離より α 以上大きければ損失は0になる。</p><p>Contrastive Loss が「ペアの距離そのもの」を目標値に近づけるのに対し、Triplet Loss は「ポジティブよりネガティブが遠い」という<strong>相対的な</strong>関係を学ぶ。簡単に条件を満たす3つ組ばかりだと学習が進まないため、条件を満たしていない難しい3つ組を選ぶ工夫が重要になる。</p>",
+    body: "<p>基準となるデータ（アンカー a）、それと同じ種類のデータ（ポジティブ p）、異なる種類のデータ（ネガティブ n）の<strong>3つ組</strong>を使う距離学習の誤差関数。顔認識の FaceNet（Schroff ら, 2015）で用いられた。</p><div class='formula'>L = max(0, d(a, p) − d(a, n) + α)</div><p>d は埋め込みどうしの距離（FaceNet ではユークリッド距離の二乗）、α はマージンである。アンカーとネガティブの距離が、アンカーとポジティブの距離より α 以上大きければ損失は0になる。</p><p>Contrastive Loss が「ペアの距離そのもの」を目標値に近づけるのに対し、Triplet Loss は「ポジティブよりネガティブが遠い」という<strong>相対的な</strong>関係を学ぶ。簡単に条件を満たす3つ組ばかりだと学習が進まないため、条件を満たしていない難しい3つ組を選ぶ工夫が重要になる。</p>",
     exam: "アンカー・ポジティブ・ネガティブの3つ組と、相対的な距離の条件が問われる。" }
   ],
   pitfalls: [
@@ -129,12 +129,16 @@ GK.addText([
   sources: [
     { t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 6 Deep Feedforward Networks", u: "https://www.deeplearningbook.org/contents/mlp.html" },
     { t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 3 Probability and Information Theory", u: "https://www.deeplearningbook.org/contents/prob.html" },
+    { t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 5（5.5 Maximum Likelihood Estimation・5.5.1 Conditional Log-Likelihood and Mean Squared Error）", u: "https://www.deeplearningbook.org/contents/ml.html" },
+    { t: "Bishop, C. M. (2006). Pattern Recognition and Machine Learning, Section 1.1 Example: Polynomial Curve Fitting・1.6.1 Relative entropy and mutual information", u: "https://www.microsoft.com/en-us/research/publication/pattern-recognition-machine-learning/" },
     { t: "Kullback, S. & Leibler, R. A. (1951). On Information and Sufficiency", u: "https://doi.org/10.1214/aoms/1177729694" },
     { t: "Hadsell, Chopra & LeCun (2006). Dimensionality Reduction by Learning an Invariant Mapping", u: "https://doi.org/10.1109/CVPR.2006.100" },
     { t: "Chopra, Hadsell & LeCun (2005). Learning a Similarity Metric Discriminatively, with Application to Face Verification", u: "https://doi.org/10.1109/CVPR.2005.202" },
     { t: "Schroff, Kalenichenko & Philbin (2015). FaceNet: A Unified Embedding for Face Recognition and Clustering", u: "https://arxiv.org/abs/1503.03832" },
     { t: "Kingma, D. P. & Welling, M. (2013). Auto-Encoding Variational Bayes", u: "https://arxiv.org/abs/1312.6114" },
     { t: "PyTorch documentation: torch.nn.CrossEntropyLoss", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html" },
+    { t: "PyTorch documentation: torch.nn.BCELoss", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.BCELoss.html" },
+    { t: "PyTorch documentation: torch.nn.HuberLoss", u: "https://docs.pytorch.org/docs/stable/generated/torch.nn.HuberLoss.html" },
     { t: "Chai, T. & Draxler, R. R. (2014). Root mean square error (RMSE) or mean absolute error (MAE)? – Arguments against avoiding RMSE in the literature", u: "https://doi.org/10.5194/gmd-7-1247-2014" }
   ] },
 { section: "T14",
