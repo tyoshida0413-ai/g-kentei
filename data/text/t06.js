@@ -543,7 +543,7 @@ GK.addText([
     body: "<p>次の2つの過程で考える生成モデル。考え方は Sohl-Dickstein ら（2015）が示し、Ho ら（2020）の DDPM で高品質な画像生成が示されて広まった。</p><ul><li><strong>拡散過程（前向き過程）</strong>：画像に小さなガウスノイズを少しずつ加え、ほぼ完全なノイズにする（DDPM では 1000 段階）。決まった手順で加えるだけで、この過程は学習しない</li><li><strong>逆拡散過程</strong>：ノイズを少しずつ取り除いて画像に戻していく。この1段階分の操作をニューラルネットワーク（DDPM では U-Net 型）で学習する</li></ul><p>DDPM では、ノイズを加えた画像から「加えられたノイズ」を予測するように学習し、生成時は完全なノイズから、予測したノイズを取り除く操作を段階の数だけくり返す。</p><p>GAN のように2つのネットワークを競わせる必要はないが、多数の段階を順にくり返すため生成に時間がかかる。そこで、少ない段階で生成する DDIM（Song ら, 2020）や、圧縮した潜在空間で拡散を行う潜在拡散モデル（Rombach ら, 2021）が提案された。後者は、文章から画像を作る Stable Diffusion の基になった。</p>",
     exam: "ノイズを加える過程（拡散過程。学習しない）と、ノイズを取り除く過程（逆拡散過程。これを学習する）からなる仕組み、生成に時間がかかることが問われる。GAN・VAE との違いにも注意。" },
   { g: "nerf", kw: ["NeRF"], title: "NeRF",
-    body: "<p>Mildenhall ら（2020）が提案した、撮影していない新しい視点からの画像を生成する（新規視点合成）手法。Neural Radiance Fields の略である。ある場面をさまざまな方向から撮った写真と、それぞれのカメラの位置・向きを入力として学習する。</p><p>場面を、3次元の位置 (x, y, z) と見る方向 (θ, φ) の5つの値を入力とし、その点の色と密度（光をさえぎる度合い）を出力する関数として表す。この関数を、畳み込み層を使わない全結合のネットワーク（多層パーセプトロン）で近似する。画像を作るときは、カメラから各画素に向かう光線に沿って点を取り、ネットワークの出力を<strong>ボリュームレンダリング</strong>で積み重ねて画素の色を求める。この計算は微分できるので、実際の写真との色の差を小さくするようにネットワークを学習できる。</p><p>1つの場面ごとに1つのネットワークを学習する必要があり、原論文では、1つの場面の学習に GPU で1〜2日かかった。</p>",
+    body: "<p>Mildenhall ら（2020）が提案した、撮影していない新しい視点からの画像を生成する（新規視点合成）手法。Neural Radiance Fields の略である。ある場面をさまざまな方向から撮った写真と、それぞれのカメラの位置・向きを入力として学習する。</p><p>場面を、3次元の位置 (x, y, z) と見る方向 (θ, φ) の5つの値を入力とし、その点の色と密度（光をさえぎる度合い）を出力する関数として表す。この関数を、畳み込み層を使わない全結合のネットワーク（多層パーセプトロン）で近似する。画像を作るときは、カメラから各画素に向かう光線に沿って点を取り、ネットワークの出力を<strong>ボリュームレンダリング</strong>で積み重ねて画素の色を求める。この計算は微分できるので、実際の写真との色の差を小さくするようにネットワークを学習できる。</p><p>場面ごとに別々にネットワークを学習する必要があり、原論文では、1つの場面の学習に GPU で1〜2日かかった。</p>",
     exam: "多視点の写真から3次元の場面を表し、新しい視点の画像を生成すること、入力が位置と見る方向で、出力が色と密度であることが問われる。" },
   { g: "image-generation", kw: ["画像生成"], title: "画像生成",
     body: "<p>コンピュータで新しい画像を作り出すタスク。目的に応じて次のような種類がある。</p><ul><li>条件なしの生成：学習データに似た新しい画像を作る（例：実在しない人の顔）</li><li>条件付きの生成：クラスのラベルや文章を条件に画像を作る。文章から画像を作るものを Text-To-Image という</li><li>画像から画像への変換：線画を写真に、昼を夜に変えるなど（Pix2Pix、CycleGAN）</li><li>超解像・画像の修復：低解像度の画像を高解像度にする、欠けた部分を補う</li></ul><p>使われるモデルは、VAE（T24）、GAN（DCGAN、人の顔などの高精細な画像の生成で知られる StyleGAN など）、拡散モデル（DALL-E 2、Imagen、Stable Diffusion など）と発展してきた。デザインや作品づくりなどに使われる一方、実在の人物の偽の画像や映像（ディープフェイク）など、悪用の懸念もある（L12）。</p>",
@@ -560,12 +560,14 @@ GK.addText([
     "Pix2Pix はペアの画像が必要、CycleGAN はペアが不要（サイクル一貫性損失を使う）。",
     "拡散モデルは、ノイズを加える過程（学習しない）と、ノイズを取り除く過程（学習する）からなる。高品質だが、生成に多くの段階が必要で時間がかかる。",
     "GAN は2つのネットワークを競わせる。VAE はエンコーダとデコーダで潜在変数の分布を学ぶ（T24）。拡散モデルはノイズの除去を学ぶ。",
-    "NeRF は2次元の画像そのものを生成するモデルではなく、多視点の写真から3次元の場面を表し、新しい視点の画像を作る手法。",
+    "NeRF のネットワークは画像を直接出力しない。多視点の写真から3次元の場面（各点の色と密度）を表し、新しい視点の画像をボリュームレンダリングで作る手法。",
     "DCGAN は畳み込みを使った GAN の構成の指針。プーリングを使わず、ストライド付きの畳み込みと転置畳み込みを使う。",
     "文章生成の言語モデルは次の単語を予測してつなげるため、もっともらしいが事実と異なる文を作ることがある。"
   ],
   sources: [
     { t: "Goodfellow, I. et al. (2014). Generative Adversarial Networks", u: "https://arxiv.org/abs/1406.2661" },
+    { t: "Goodfellow, I. (2016). NIPS 2016 Tutorial: Generative Adversarial Networks", u: "https://arxiv.org/abs/1701.00160" },
+    { t: "Kingma, D. P. & Welling, M. (2013). Auto-Encoding Variational Bayes", u: "https://arxiv.org/abs/1312.6114" },
     { t: "Radford, A., Metz, L. & Chintala, S. (2015). Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks", u: "https://arxiv.org/abs/1511.06434" },
     { t: "Mirza, M. & Osindero, S. (2014). Conditional Generative Adversarial Nets", u: "https://arxiv.org/abs/1411.1784" },
     { t: "Isola, P. et al. (2016). Image-to-Image Translation with Conditional Adversarial Networks", u: "https://arxiv.org/abs/1611.07004" },
@@ -581,6 +583,9 @@ GK.addText([
     { t: "Mildenhall, B. et al. (2020). NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis", u: "https://arxiv.org/abs/2003.08934" },
     { t: "Brown, T. B. et al. (2020). Language Models are Few-Shot Learners", u: "https://arxiv.org/abs/2005.14165" },
     { t: "Ouyang, L. et al. (2022). Training language models to follow instructions with human feedback", u: "https://arxiv.org/abs/2203.02155" },
+    { t: "Touvron, H. et al. (2023). Llama 2: Open Foundation and Fine-Tuned Chat Models", u: "https://arxiv.org/abs/2307.09288" },
+    { t: "van den Oord, A. et al. (2016). WaveNet: A Generative Model for Raw Audio", u: "https://arxiv.org/abs/1609.03499" },
+    { t: "Shen, J. et al. (2017). Natural TTS Synthesis by Conditioning WaveNet on Mel Spectrogram Predictions", u: "https://arxiv.org/abs/1712.05884" },
     { t: "Wang, C. et al. (2023). Neural Codec Language Models are Zero-Shot Text to Speech Synthesizers", u: "https://arxiv.org/abs/2301.02111" },
     { t: "Dhariwal, P. et al. (2020). Jukebox: A Generative Model for Music", u: "https://arxiv.org/abs/2005.00341" }
   ] }
