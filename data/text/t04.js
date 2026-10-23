@@ -142,7 +142,7 @@ GK.addText([
     { t: "Chai, T. & Draxler, R. R. (2014). Root mean square error (RMSE) or mean absolute error (MAE)? – Arguments against avoiding RMSE in the literature", u: "https://doi.org/10.5194/gmd-7-1247-2014" }
   ] },
 { section: "T14",
-  lead: "<p>パラメータの多いモデルは、訓練データの細かな特徴やノイズまで覚えてしまい、未知のデータでの性能が下がる（過学習、T10）。<strong>正則化</strong>は、これを抑えて汎化性能を高めるための工夫の総称である。</p><p>この節では、誤差関数に重みの大きさへの罰則を加える L0・L1・L2 正則化と、それを線形回帰に使ったラッソ回帰・リッジ回帰、ニューラルネットワーク特有のドロップアウトを学ぶ。早期終了（T16）やデータ拡張（T25）も、広い意味の正則化である。</p>",
+  lead: "<p>パラメータの多いモデルは、訓練データの細かな特徴やノイズまで覚えてしまい、未知のデータでの性能が下がる（過学習、T10）。<strong>正則化</strong>は、これを抑えて汎化性能を高めるための工夫の総称である。</p><p>この節では、誤差関数に重みの大きさへの罰則を加える L0・L1・L2 正則化と、それを線形回帰に使ったラッソ回帰・リッジ回帰、ニューラルネットワーク向けのドロップアウトを学ぶ。早期終了（T16）やデータ拡張（T25）も、広い意味の正則化である。</p>",
   items: [
   { g: "regularization", kw: ["正則化"], title: "正則化",
     body: "<p>教科書 <em>Deep Learning</em> は、正則化を「訓練誤差ではなく汎化誤差を減らすことを意図した、学習アルゴリズムへのあらゆる変更」と定義している。代表的なのは、誤差関数に<strong>正則化項</strong>（重みの大きさへの罰則）を加える方法である。</p><div class='formula'>（全体の誤差）＝（もとの誤差関数）＋ λ ×（重みの大きさ）</div><p>λ（正則化の強さ）はハイパーパラメータで、大きくするほど重みが小さく抑えられ、モデルが単純になる。大きすぎると訓練データにすら合わなくなる（未学習）ので、検証データで調整する。ニューラルネットワークでは、ふつう重みだけに罰則をかけ、バイアスにはかけない。</p><p>「重みの大きさ」の測り方で種類が分かれる：0でない重みの個数（L0）、絶対値の和（L1）、二乗和（L2）。このほか、ドロップアウト、早期終了、データ拡張なども正則化として働く。</p>",
@@ -176,7 +176,9 @@ GK.addText([
   ],
   sources: [
     { t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 7 Regularization for Deep Learning", u: "https://www.deeplearningbook.org/contents/regularization.html" },
+    { t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 5（5.2.2 Regularization・5.3.1 Validation Sets）", u: "https://www.deeplearningbook.org/contents/ml.html" },
     { t: "Tibshirani, R. (1996). Regression Shrinkage and Selection via the Lasso", u: "https://doi.org/10.1111/j.2517-6161.1996.tb02080.x" },
+    { t: "Hastie, Tibshirani & Wainwright (2015). Statistical Learning with Sparsity: The Lasso and Generalizations（2.9 ℓq Penalties and Bayes Estimates）", u: "https://hastie.su.domains/StatLearnSparsity/" },
     { t: "Hoerl, A. E. & Kennard, R. W. (1970). Ridge Regression: Biased Estimation for Nonorthogonal Problems", u: "https://doi.org/10.1080/00401706.1970.10488634" },
     { t: "Zou, H. & Hastie, T. (2005). Regularization and Variable Selection via the Elastic Net", u: "https://doi.org/10.1111/j.1467-9868.2005.00503.x" },
     { t: "Louizos, Welling & Kingma (2018). Learning Sparse Neural Networks through L0 Regularization", u: "https://arxiv.org/abs/1712.01312" },
@@ -199,7 +201,7 @@ GK.addText([
     body: "<p>ある結果（成功・失敗、出力の誤差）が出たとき、その結果に至るまでの多数の内部の要素のうち、<strong>どれがどれだけ寄与したか</strong>を決める問題。Minsky（1961）が、学習する機械の基本的な問題として論じた。チェスの勝敗が、途中の数多くの手のどれのおかげ（せい）なのかを決める、という例が典型である。</p><p>多層のニューラルネットワークでは、出力層には正解があるが、<strong>隠れ層のニューロンには正解が与えられない</strong>。そのため「隠れ層の重みをどちらにどれだけ動かせば誤差が減るか」が分からない、という形でこの問題が現れる。誤差逆伝播法は、誤差を各重みで偏微分した値（勾配）として、それぞれの重みの寄与を計算することで、これを解いている。</p><p>強化学習（T09）でも、どの行動が後の報酬につながったのかを決める問題として現れる。</p>",
     exam: "「結果に対する各要素の寄与（責任）をどう割り当てるか」という問題の意味が問われる。" },
   { g: "vanishing-gradient", kw: ["勾配消失問題"], title: "勾配消失問題",
-    body: "<p>誤差逆伝播法で、出力層から入力層側へさかのぼるにつれて勾配が小さくなり、<strong>入力層に近い層の重みがほとんど更新されなくなる</strong>問題。深いネットワークの学習を長く阻んだ壁で、Hochreiter（1991）が分析し、Bengio ら（1994）は RNN が長期の依存関係を学べない原因として示した。</p><p>原因は、連鎖律で層ごとの微分を掛け合わせることにある。シグモイド関数の導関数は最大でも0.25なので、層を重ねるたびに勾配が縮む。</p><p>主な対策は次のとおり。</p><ul><li>活性化関数を <strong>ReLU 関数</strong>などに替える（正の側で導関数が1、T12）</li><li>重みの<strong>初期値</strong>を工夫する：tanh 関数などには <strong>Xavier の初期値</strong>（前後の層のニューロン数から分散を決める。Glorot & Bengio, 2010）、ReLU 関数には <strong>He の初期値</strong>（前の層のニューロン数 n に対して分散 2/n。He ら, 2015）</li><li><strong>バッチ正規化</strong>（T19）で各層の入力の分布を整える</li><li><strong>スキップ結合</strong>（ResNet、T21）で勾配の近道を作る</li><li>RNN では <strong>LSTM</strong>（T22）などのゲート機構を使う</li></ul>",
+    body: "<p>誤差逆伝播法で、出力層から入力層側へさかのぼるにつれて勾配が小さくなり、<strong>入力層に近い層の重みがほとんど更新されなくなる</strong>問題。深いネットワークの学習を長く阻んだ壁で、Hochreiter（1991）が分析し、Bengio ら（1994）は RNN が長期の依存関係を学べない原因として示した。</p><p>原因は、連鎖律で層ごとの微分を掛け合わせることにある。シグモイド関数の導関数は最大でも0.25なので、重みの絶対値が4未満であれば、1層さかのぼるごとに掛かる値（導関数×重み）が1より小さくなり、層を重ねるたびに勾配が縮む（Hochreiter & Schmidhuber, 1997）。</p><p>主な対策は次のとおり。</p><ul><li>活性化関数を <strong>ReLU 関数</strong>などに替える（正の側で導関数が1、T12）</li><li>重みの<strong>初期値</strong>を工夫する：tanh 関数などには <strong>Xavier の初期値</strong>（前後の層のニューロン数から分散を決める。Glorot & Bengio, 2010）、ReLU 関数には <strong>He の初期値</strong>（前の層のニューロン数 n に対して分散 2/n。He ら, 2015）</li><li><strong>バッチ正規化</strong>（T19）で各層の入力の分布を整える</li><li><strong>スキップ結合</strong>（ResNet、T21）で勾配の近道を作る</li><li>RNN では <strong>LSTM</strong>（T22）などのゲート機構を使う</li></ul>",
     exam: "原因（微分の掛け合わせ、シグモイド関数の導関数の小ささ）と対策（ReLU・初期値・バッチ正規化・スキップ結合）の対応が頻出。" },
   { g: "exploding-gradient", kw: ["勾配爆発問題"], title: "勾配爆発問題",
     body: "<p>勾配消失とは逆に、誤差逆伝播法でさかのぼるにつれて勾配が<strong>指数関数的に大きくなる</strong>問題。重みが一度に大きく動きすぎて誤差が跳ね上がったり、値があふれて計算できなく（NaN に）なったりして、学習が不安定になる。同じ重みを時間方向に何度も掛ける <strong>RNN</strong>（T22）で特に起きやすい（Pascanu ら, 2013）。</p><p>代表的な対策は<strong>勾配クリッピング</strong>である。勾配の大きさ（ノルム）がしきい値を超えたら、向きはそのままで大きさだけをしきい値まで縮める。重みの初期値の工夫や正規化も、勾配の大きさを適切な範囲に保つのに役立つ。</p>",
@@ -221,7 +223,12 @@ GK.addText([
     { t: "Glorot, X. & Bengio, Y. (2010). Understanding the difficulty of training deep feedforward neural networks", u: "https://proceedings.mlr.press/v9/glorot10a.html" },
     { t: "He, Zhang, Ren & Sun (2015). Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification", u: "https://arxiv.org/abs/1502.01852" },
     { t: "Pascanu, Mikolov & Bengio (2013). On the difficulty of training Recurrent Neural Networks", u: "https://arxiv.org/abs/1211.5063" },
-    { t: "Google Machine Learning Glossary（vanishing gradient problem, exploding gradient problem）", u: "https://developers.google.com/machine-learning/glossary" }
+    { t: "Google Machine Learning Glossary（vanishing gradient problem, exploding gradient problem）", u: "https://developers.google.com/machine-learning/glossary" },
+    { t: "Goodfellow, Bengio & Courville. Deep Learning, Chapter 10（10.7 The Challenge of Long-Term Dependencies・10.11.1 Clipping Gradients）", u: "https://www.deeplearningbook.org/contents/rnn.html" },
+    { t: "Hochreiter, S. & Schmidhuber, J. (1997). Long Short-Term Memory（3.1 Exponentially Decaying Error）", u: "https://doi.org/10.1162/neco.1997.9.8.1735" },
+    { t: "Ioffe, S. & Szegedy, C. (2015). Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift", u: "https://arxiv.org/abs/1502.03167" },
+    { t: "He, Zhang, Ren & Sun (2016). Identity Mappings in Deep Residual Networks", u: "https://arxiv.org/abs/1603.05027" },
+    { t: "Bishop, C. M. (2006). Pattern Recognition and Machine Learning, Section 5.3.3 Efficiency of backpropagation", u: "https://www.microsoft.com/en-us/research/publication/pattern-recognition-machine-learning/" }
   ] },
 { section: "T16",
   lead: "<p>ニューラルネットワークの学習は、誤差関数の値が最小になる重みを探す<strong>最適化</strong>の問題である。基本となるのは、誤差の勾配と逆の向きに重みを少しずつ動かす<strong>勾配降下法</strong>である。</p><p>この節では、勾配の計算に使うデータの量による違い（バッチ学習・ミニバッチ学習・オンライン学習）と学習の単位（エポック・イテレーション）、局所最適解や鞍点といった勾配降下法の問題とそれを改善する手法（モーメンタム、AdaGrad、RMSprop、AdaDelta、Adam など）、学習率などのハイパーパラメータの調整方法、そして最適化と汎化に関する知見（二重降下現象、ノーフリーランチの定理）を学ぶ。</p>",
