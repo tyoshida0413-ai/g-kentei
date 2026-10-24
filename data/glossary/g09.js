@@ -13,6 +13,9 @@
   const GDPR_JA = { t: "個人情報保護委員会「一般データ保護規則（GDPR）の条文」（仮日本語訳）", u: "https://www.ppc.go.jp/files/pdf/gdpr-provisions-ja.pdf" };
   const GDPR_PRE = { t: "個人情報保護委員会「一般データ保護規則（GDPR）の前文」（仮日本語訳）", u: "https://www.ppc.go.jp/files/pdf/gdpr-preface-ja.pdf" };
   const PPC_JPEU = { t: "個人情報保護委員会「日EU間・日英間のデータ越境移転について」", u: "https://www.ppc.go.jp/enforcement/cooperation/cooperation/sougoninshou/" };
+  const GDPR_EN = { t: "Regulation (EU) 2016/679 (General Data Protection Regulation)（EUR-Lex）", u: "https://eur-lex.europa.eu/eli/reg/2016/679/oj" };
+  const JP_ADEQ = { t: "Commission Implementing Decision (EU) 2019/419 of 23 January 2019 on the adequate protection of personal data by Japan（EUR-Lex）", u: "https://eur-lex.europa.eu/eli/dec_impl/2019/419/oj" };
+  const PPC_ABOUT = { t: "個人情報保護委員会「個人情報保護委員会について」", u: "https://www.ppc.go.jp/aboutus/commission/" };
 
   GK.addGlossary([
   /* ── L01 個人情報保護法：シラバスのキーワード ── */
@@ -30,7 +33,7 @@
     src: [APPI, PPC_GL] },
   { id: "retained-personal-data", term: "保有個人データ", reading: "ほゆうこじんでーた", kw: ["保有個人データ"], home: "L01",
     short: "事業者が、開示・訂正・利用停止・消去・第三者提供の停止を行う権限を持つ個人データ（16条4項）。本人はこれらを請求できる。2022年4月からは、6か月以内に消去する短期保存のデータも含まれる。",
-    src: [APPI, PPC_GL, PPC_R2] },
+    src: [APPI, PPC_GL, PPC_R2, PPC_R2P] },
   { id: "purpose-of-use", term: "利用目的", reading: "りようもくてき", kw: ["利用目的"], home: "L01", scope: ["L01"],
     short: "個人情報を何に使うかを示す目的。事業者はできる限り特定し（17条1項）、取得時に本人に通知または公表する。特定した目的の範囲を超えて扱うには、原則として本人の事前の同意が必要である（18条1項）。",
     src: [APPI, PPC_GL, PPC_QA] },
@@ -44,11 +47,11 @@
     short: "他の情報と照合しない限り特定の個人を識別できないよう、氏名などを削除・置換して個人情報を加工した情報（2条5項）。2020年改正で創設。事業者内部の分析を想定し、義務が緩和される一方、第三者提供は原則禁止。",
     src: [APPI, PPC_ANON, PPC_R2] },
   { id: "anonymized-info", term: "匿名加工情報", reading: "とくめいかこうじょうほう", kw: ["匿名加工情報"], home: "L01",
-    short: "特定の個人を識別できず、元の個人情報を復元できないように加工した情報（2条6項）。個人情報に当たらず、項目などを公表すれば本人の同意なく第三者に提供できる。本人を識別するための照合は禁止される。",
+    short: "特定の個人を識別できず、元の個人情報を復元できないように加工した情報（2条6項）。個人情報に当たらず、項目などを公表し、提供先に匿名加工情報である旨を明示すれば、本人の同意なく第三者に提供できる。本人を識別するための照合は禁止される。",
     src: [APPI, PPC_ANON, PPC_QA] },
   { id: "gdpr", term: "一般データ保護規則", abbr: "GDPR", reading: "いっぱんでーたほごきそく", aliases: ["EU一般データ保護規則"], kw: ["GDPR"], home: "L01",
     short: "EU の個人データ保護の規則（Regulation (EU) 2016/679）。2018年5月25日から適用。EU 域内に拠点がなくても、EU 域内の人に商品・サービスを提供したり行動を監視したりする事業者に適用される（3条2項）。",
-    src: [GDPR_JA, GDPR_PRE] },
+    src: [GDPR_EN, GDPR_JA, GDPR_PRE] },
 
   /* ── L01 個人情報保護法：本文に出てくる他の専門用語 ── */
   { id: "appi-business-operator", term: "個人情報取扱事業者", reading: "こじんじょうほうとりあつかいじぎょうしゃ", kw: [], home: "L01",
@@ -74,7 +77,7 @@
     src: [APPI, PPC_OFF] },
   { id: "adequacy-decision", term: "十分性認定", reading: "じゅうぶんせいにんてい", kw: [], home: "L01",
     short: "GDPR 45条に基づき、欧州委員会が EU 域外の国・地域について十分な個人データ保護の水準があると認める決定。認定先へは個別の許可なしに個人データを移転できる。日本は2019年1月23日に認定された。",
-    src: [GDPR_JA, PPC_JPEU] },
+    src: [GDPR_JA, JP_ADEQ, PPC_JPEU] },
   { id: "safety-management-measures", term: "安全管理措置", reading: "あんぜんかんりそち", kw: [], home: "L01",
     short: "個人データの漏えい・滅失・毀損を防ぐために事業者が講じる必要かつ適切な措置（個人情報保護法23条）。ガイドラインは、組織的・人的・物理的・技術的な安全管理措置などに分けて内容を示している。",
     src: [APPI, PPC_GL] },
@@ -88,11 +91,11 @@
     short: "国外の事業者にも法律を適用すること。個人情報保護法は、国内の人に商品・サービスを提供する事業者が国内の人の個人情報を外国で扱う場合にも適用される（171条）。GDPR も EU 域外の事業者に適用されうる（3条2項）。",
     src: [APPI, GDPR_JA] },
   { id: "profiling", term: "プロファイリング", reading: "ぷろふぁいりんぐ", kw: [], home: "L01",
-    short: "個人データを自動的に処理して、個人の好み・行動・信用度などを分析・予測すること（GDPR 4条(4)）。日本では Q&A が、本人が予測できない分析処理をする場合はそれを含めて利用目的を特定するよう求めている。",
+    short: "個人データを自動的に処理して、個人の経済状況・好み・行動・信頼性などを分析・予測すること（GDPR 4条(4)）。日本では Q&A が、本人が予測できない分析処理をする場合はそれを含めて利用目的を特定するよう求めている。",
     src: [GDPR_JA, PPC_QA] },
   { id: "ppc", term: "個人情報保護委員会", abbr: "PPC", reading: "こじんじょうほうほごいいんかい", kw: [], home: "L01",
     short: "個人情報保護法に基づいて置かれる国の機関（130条）。ガイドラインや Q&A の作成、事業者への指導・助言（147条）や勧告・命令（148条）、漏えい等の報告の受付などを行う。",
-    src: [APPI, PPC_R2P] }
+    src: [APPI, PPC_ABOUT, PPC_R2P] }
   ]);
 
   /* ── 出典（L02 著作権法） ── */
